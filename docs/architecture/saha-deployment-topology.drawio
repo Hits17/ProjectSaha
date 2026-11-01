@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-11-01T00:00:00Z" agent="Saha source documentation">
+  <diagram id="current" name="Current · 2026-11-01">
+    <mxGraphModel dx="1400" dy="1000" grid="1" gridSize="10" page="1" pageWidth="1400" pageHeight="1000">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="browser" value="Public HTTPS&#10;sahasolutions.com + www" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="tunnel" value="Existing Cloudflare Tunnel&#10;Public nginx origin only" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="370" y="60" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="nginx" value="nginx :80&#10;Pages / API / readiness / SSE" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="700" y="60" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="frontend" value="saha-frontend :3000&#10;Build receipt + X-Saha-Build" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="60" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="saha-backend :8000&#10;Read-only schema startup gate" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="700" y="280" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="private" value="Private LAN/VPN nginx :8080&#10;Excluded from tunnel" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="280" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="admin" value="saha-admin :3002&#10;MFA-qualified platform controls" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="370" y="280" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="data" value="Native PostgreSQL :5432&#10;Docker saha-infra services" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="280" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="cli" value="saha CLI / grouped systemd service&#10;stop → migrate/build → start --local&#10;versions → online" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="370" y="500" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="chat" value="Separate localhost test chat&#10;HTTPS :18448 / :18449&#10;Not started by saha" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="700" y="500" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="edge0" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="browser" target="tunnel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" value="Local tunnel ingress" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="tunnel" target="nginx">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="/" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="nginx" target="frontend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="/api and /health" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="nginx" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" value="/" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="private" target="admin">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" value="/api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="private" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="Local data access" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="api" target="data">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" value="Grouped lifecycle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="cli" target="frontend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge8" value="Grouped lifecycle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="cli" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge9" value="Grouped lifecycle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="cli" target="admin">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

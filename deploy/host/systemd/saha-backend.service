@@ -1,0 +1,19 @@
+[Unit]
+Description=Saha API (FastAPI/uvicorn)
+Requires=postgresql.service saha-infra.service
+After=network-online.target postgresql.service saha-infra.service
+Wants=network-online.target
+PartOf=saha.service
+
+[Service]
+Type=simple
+User=@USER@
+WorkingDirectory=@REPO@/apps/backend
+ExecStartPre=@REPO@/apps/backend/.venv/bin/python scripts/check_host_schema.py
+ExecStart=@REPO@/apps/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 2 --proxy-headers --forwarded-allow-ips=127.0.0.1,::1
+Restart=on-failure
+RestartSec=5
+Environment=PATH=/home/@USER@/.local/bin:/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

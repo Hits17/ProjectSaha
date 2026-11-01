@@ -1,0 +1,14 @@
+[Unit]
+Description=Saha existing Docker infrastructure (PostgreSQL remains native)
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=@REPO@/saha-dev-infra
+ExecStart=/usr/bin/docker compose up -d --no-recreate --pull never
+RemainAfterExit=yes
+# No ExecStop: stopping the application preserves databases and infrastructure.
+
+[Install]
+WantedBy=multi-user.target

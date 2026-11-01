@@ -1,0 +1,189 @@
+name: ci
+
+# No CI existed before this (security/AUDIT.md SAHA-023): 141 tests ran only when
+# someone remembered, and every fix in the audit could regress silently. The
+# custom-checks job below is the important one — generic scanners would not have
+# caught SAHA-003 or SAHA-007, so those lessons are encoded as executable rules.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: backend tests + SAST
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: saha_test
+          POSTGRES_PASSWORD: test-only-ci-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d saha_test"
+          --health-interval 10s --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+asyncpg://postgres:test-only-ci-password@localhost:5432/saha_test
+      REDIS_URL: redis://localhost:6379/0
+      PGPASSWORD: test-only-ci-password
+    defaults:
+      run:
+        working-directory: apps/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --all-extras
+      - name: Initialize isolated database with explicit migration dependencies
+        run: |
+          psql -h localhost -U postgres -d saha_test -v ON_ERROR_STOP=1 -c 'CREATE ROLE saha;'
+          psql -h localhost -U postgres -d saha_test -v ON_ERROR_STOP=1 -f ../../saha-dev-infra/init-scripts/01-schema.sql
+          for migration in \
+            2026-08-05-security-hardening.sql \
+            2026-08-06-social-feed.sql \
+            2026-08-06-content-moderation.sql \
+            2026-10-31-open-collaboration.sql \
+            2026-10-31-encrypted-chat.sql \
+            2026-10-31-resource-provenance.sql \
+            2026-10-31-open-projects.sql \
+            2026-10-31-research-collections.sql \
+            2026-11-01-social-media.sql \
+            2026-11-01-project-workspaces.sql; do
+            psql -h localhost -U postgres -d saha_test -v ON_ERROR_STOP=1 -f "../../saha-dev-infra/migrations/$migration"
+          done
+      - name: Require integration prerequisites
+        run: uv run python scripts/check_test_database.py
+      - name: Tests
+        run: uv run pytest -q
+      - name: Lint
+        run: uvx ruff check .
+        continue-on-error: true   # advisory until the existing tree is clean
+      - name: SAST (bandit)
+        run: uvx bandit -r app -ll
+      - name: Dependency audit
+        run: uvx pip-audit --strict --desc
+      - name: Semgrep
+        run: uvx semgrep --config=p/python --config=p/secrets --error --skip-unknown-extensions .
+        continue-on-error: true   # advisory on first adoption; flip once triaged
+
+  secrets:
+    name: secret scan (full history)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # history, not just the working tree
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  frontend:
+    name: ${{ matrix.app }} build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [frontend, admin]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: apps/${{ matrix.app }}/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: apps/${{ matrix.app }}
+      - name: Verify installed runtime, peer and application development dependencies
+        run: node scripts/verify-js-dependencies.cjs ${{ matrix.app }}
+      - name: Navigation and server-rendered listing regressions
+        if: matrix.app == 'frontend'
+        run: |
+          node scripts/test-ux-navigation.cjs
+          node scripts/test-social-mentions.cjs
+          node scripts/test-session-lifecycle.cjs
+      - run: pnpm audit --audit-level=high
+        working-directory: apps/${{ matrix.app }}
+        continue-on-error: true
+      - run: pnpm exec tsc --noEmit
+        working-directory: apps/${{ matrix.app }}
+      - run: pnpm build
+        working-directory: apps/${{ matrix.app }}
+        env:
+          NEXT_PUBLIC_API_URL: https://ci.invalid
+
+  custom-checks:
+    name: audit-derived invariants
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # SAHA-002 / 006 / 012 / 028 — data-plane services must never publish on
+      # 0.0.0.0. MinIO with default credentials on a shared network was the
+      # cheapest total-compromise path in the entire audit.
+      - name: No container ports published on all interfaces
+        run: |
+          if grep -nE '^\s+- "[0-9]+:[0-9]+"' saha-dev-infra/docker-compose.yml; then
+            echo "::error::Ports above publish on 0.0.0.0. Prefix with 127.0.0.1: — see security/AUDIT.md SAHA-002"
+            exit 1
+          fi
+
+      # SAHA-017 — no credential may travel in a URL. Query strings are written
+      # to nginx access logs and browser history.
+      - name: No credentials accepted via query parameter
+        run: |
+          if grep -rnE '(token|password|secret|api_key)\s*:\s*str\s*=\s*Query' apps/backend/app; then
+            echo "::error::Credential accepted as a query parameter — see security/AUDIT.md SAHA-017"
+            exit 1
+          fi
+
+      # SAHA-001 / 005 — a known placeholder must never appear in committed config.
+      - name: No placeholder key material committed
+        run: |
+          if grep -rn --exclude-dir=.git --exclude='*.md' \
+               -e 'change-me-32-bytes-in-production' \
+               -e 'dev-vault-key-32-bytes-padding' \
+               -e 'dev-secret-key-change-in-production' \
+               . | grep -v '_INSECURE_DEFAULTS' | grep -v 'tests/' | grep -v '.env.example'; then
+            echo "::error::Placeholder key material outside the allowed locations — see security/AUDIT.md SAHA-001"
+            exit 1
+          fi
+
+      # SAHA-013 — message plaintext must not reach an LLM client.
+      - name: Negotiation messages never touch the LLM client
+        run: |
+          if grep -n 'llm' apps/backend/app/services/messages.py; then
+            echo "::error::app/services/messages.py references the LLM client — see security/AUDIT.md SAHA-013"
+            exit 1
+          fi
+
+      # SAHA-009 — the control plane must not persist a refresh token.
+      - name: Admin console does not persist the refresh token
+        run: |
+          if grep -n 'refreshToken: s.refreshToken' apps/admin/store/auth.ts; then
+            echo "::error::Admin console persists the refresh token — see security/AUDIT.md SAHA-009"
+            exit 1
+          fi
+
+  # The structural invariants live in pytest so they run locally too:
+  #   tests/test_authorization_matrix.py  — every route declares a guard (SAHA-022)
+  #                                       — high-value actions require step-up (SAHA-015)
+  #   tests/test_disclosure_tiers.py      — no confidential field in a public model (SAHA-003)
+  #   tests/test_config_guards.py         — no dev default in any environment (SAHA-001/005)
+  #   tests/test_contact_detect.py        — confidential AI stays local (SAHA-013)

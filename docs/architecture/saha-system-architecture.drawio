@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-11-01T00:00:00Z" agent="Saha source documentation">
+  <diagram id="current" name="Current · 2026-11-01">
+    <mxGraphModel dx="1400" dy="1000" grid="1" gridSize="10" page="1" pageWidth="1400" pageHeight="1000">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="web" value="Members / shared Saha UI&#10;Explore · feed · institutions · projects" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="FastAPI :8000&#10;Identity + per-resource authorization" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="430" y="60" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="admin" value="Private admin :3002&#10;MFA · review · moderation" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="800" y="60" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="PostgreSQL&#10;Projects / membership / references&#10;Social metadata / IP workflows" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="430" y="260" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="storage" value="MinIO&#10;Media and vault objects&#10;API-controlled access" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="800" y="260" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="matrix" value="Matrix / Element&#10;E2EE on participant devices&#10;Local testing only" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="480" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="external" value="External reference platforms&#10;Files stay with their providers" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="430" y="480" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="November migrations required&#10;Publication and device acceptance&#10;tracked in CURRENT-STATUS.md" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#e7ede4;strokeColor=#476854;fontColor=#263b31;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="800" y="480" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="edge0" value="Same-origin API" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="web" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" value="Private API + admin guards" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="admin" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="Async SQL / memberships" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="api" target="db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="Opaque object keys" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="api" target="storage">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" value="Policy / invites / revocation only" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="api" target="matrix">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" value="Encrypted conversation in Element" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="web" target="matrix">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="Open HTTPS shortcut; no proxy fetch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;" edge="1" parent="1" source="web" target="external">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

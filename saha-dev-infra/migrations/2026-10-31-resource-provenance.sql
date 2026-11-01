@@ -1,0 +1,5 @@
+BEGIN;
+ALTER TABLE open_resources ADD COLUMN IF NOT EXISTS rights_evidence_url VARCHAR(1000);
+ALTER TABLE open_resources ADD COLUMN IF NOT EXISTS rights_note TEXT;
+ALTER TABLE open_resources ADD COLUMN IF NOT EXISTS jurisdiction VARCHAR(120);
+COMMIT;

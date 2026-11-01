@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "saha_backend"
+    static_configs:
+      - targets: ["host.docker.internal:8000"]
+    # FastAPI mounts the Prometheus ASGI app at /metrics, which serves at /metrics/
+    # (a bare /metrics returns a 307 redirect). Point the scrape at the canonical path.
+    metrics_path: /metrics/
+
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]

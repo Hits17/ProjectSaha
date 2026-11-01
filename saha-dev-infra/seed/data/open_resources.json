@@ -1,0 +1,1710 @@
+[
+  {
+    "resource_type": "patent",
+    "title": "Velcro hook-and-loop fastener",
+    "summary": "The original hook-and-loop fastener patent — de Mestral's 'velvet type fabric' inspired by burrs catching on wool. Long expired and in the public domain; the mechanism underpins reusable fastening in textiles, medical wraps, and industrial assembly.",
+    "authors": "George de Mestral",
+    "organization": "Velcro S.A.",
+    "identifier": "US2717437A",
+    "source_url": "https://patents.google.com/patent/US2717437A/en",
+    "license": "public_domain",
+    "category": "materials_science",
+    "tags": [
+      "fastener",
+      "textile",
+      "hook-and-loop"
+    ],
+    "published_year": 1955
+  },
+  {
+    "resource_type": "patent",
+    "title": "LEGO interlocking toy building brick",
+    "summary": "The clutch-power stud-and-tube coupling that made the modern LEGO brick. The utility patent expired decades ago, placing the interlocking-brick geometry in the public domain for construction toys and modular tooling.",
+    "authors": "Godtfred Kirk Christiansen",
+    "organization": "Interlego AG",
+    "identifier": "US3005282A",
+    "source_url": "https://patents.google.com/patent/US3005282A/en",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "toy",
+      "injection-molding",
+      "modular"
+    ],
+    "published_year": 1961
+  },
+  {
+    "resource_type": "patent",
+    "title": "PageRank — node ranking in a linked database",
+    "summary": "The PageRank algorithm that launched Google — ranks nodes in a linked graph by the weighted importance of inbound links. The patent has expired, so the method is free to build on for search, citation analysis, and network science.",
+    "authors": "Lawrence Page",
+    "organization": "Leland Stanford Junior University",
+    "identifier": "US6285999B1",
+    "source_url": "https://patents.google.com/patent/US6285999B1/en",
+    "license": "public_domain",
+    "category": "software_ai",
+    "tags": [
+      "algorithm",
+      "graph",
+      "ranking"
+    ],
+    "published_year": 2001
+  },
+  {
+    "resource_type": "patent",
+    "title": "PCR — nucleic acid amplification process",
+    "summary": "The polymerase chain reaction — exponential amplification of DNA sequences that transformed molecular biology and diagnostics. The foundational Cetus/Mullis patents have expired and PCR is now universally practiced.",
+    "authors": "Kary B. Mullis et al.",
+    "organization": "Cetus Corporation",
+    "identifier": "US4683195A",
+    "source_url": "https://patents.google.com/patent/US4683195A/en",
+    "license": "public_domain",
+    "category": "biotech_pharma",
+    "tags": [
+      "dna",
+      "amplification",
+      "diagnostics"
+    ],
+    "published_year": 1987
+  },
+  {
+    "resource_type": "patent",
+    "title": "Cohen–Boyer recombinant DNA method",
+    "summary": "The Cohen–Boyer process for producing biologically functional molecular chimeras — the birth of recombinant DNA and the biotech industry. Now expired and in the public domain.",
+    "authors": "Stanley N. Cohen, Herbert W. Boyer",
+    "organization": "Leland Stanford Junior University",
+    "identifier": "US4237224A",
+    "source_url": "https://patents.google.com/patent/US4237224A/en",
+    "license": "public_domain",
+    "category": "biotech_pharma",
+    "tags": [
+      "recombinant-dna",
+      "cloning",
+      "genetic-engineering"
+    ],
+    "published_year": 1980
+  },
+  {
+    "resource_type": "patent",
+    "title": "Fused deposition modeling (FDM) 3D printing",
+    "summary": "The original fused deposition modeling patent — building 3D objects by extruding material layer by layer. Its expiry in the 2000s triggered the desktop 3D-printing boom (RepRap, MakerBot, and beyond).",
+    "authors": "S. Scott Crump",
+    "organization": "Stratasys Inc.",
+    "identifier": "US5121329A",
+    "source_url": "https://patents.google.com/patent/US5121329A/en",
+    "license": "public_domain",
+    "category": "industrial_manufacturing",
+    "tags": [
+      "3d-printing",
+      "additive-manufacturing",
+      "extrusion"
+    ],
+    "published_year": 1992
+  },
+  {
+    "resource_type": "patent",
+    "title": "Nylon synthetic polyamide fiber",
+    "summary": "Carothers' synthetic-fiber patent — the invention of nylon, the first fully synthetic polyamide fiber. Public domain; the condensation-polymer chemistry underlies modern textiles and engineering plastics.",
+    "authors": "Wallace H. Carothers",
+    "organization": "E.I. du Pont de Nemours & Co.",
+    "identifier": "US2130948A",
+    "source_url": "https://patents.google.com/patent/US2130948A/en",
+    "license": "public_domain",
+    "category": "materials_science",
+    "tags": [
+      "polymer",
+      "fiber",
+      "polyamide"
+    ],
+    "published_year": 1938
+  },
+  {
+    "resource_type": "patent",
+    "title": "Linear condensation polymers (nylon chemistry)",
+    "summary": "The companion Carothers patent covering linear condensation polymers — the polymerization route to nylon and polyester. Long expired; a cornerstone of synthetic-polymer manufacturing.",
+    "authors": "Wallace H. Carothers",
+    "organization": "E.I. du Pont de Nemours & Co.",
+    "identifier": "US2071250A",
+    "source_url": "https://patents.google.com/patent/US2071250A/en",
+    "license": "public_domain",
+    "category": "materials_science",
+    "tags": [
+      "polymer",
+      "condensation",
+      "materials"
+    ],
+    "published_year": 1937
+  },
+  {
+    "resource_type": "patent",
+    "title": "Concentrator photovoltaic solar cell",
+    "summary": "An early concentrator-photovoltaic design pairing solar cells with light concentrators to raise output per cell. Expired and open to build on for low-cost solar hardware.",
+    "authors": null,
+    "organization": "Mobil Tyco Solar Energy Corp.",
+    "identifier": "US4045246A",
+    "source_url": "https://patents.google.com/patent/US4045246A/en",
+    "license": "public_domain",
+    "category": "clean_energy",
+    "tags": [
+      "solar",
+      "photovoltaic",
+      "concentrator"
+    ],
+    "published_year": 1977
+  },
+  {
+    "resource_type": "patent",
+    "title": "Apple II microcomputer color video display",
+    "summary": "Wozniak's patent for the Apple II's efficient color video display generation from a microcomputer. Now public domain — a piece of foundational personal-computing hardware.",
+    "authors": "Stephen Wozniak",
+    "organization": "Apple Computer Inc.",
+    "identifier": "US4136359A",
+    "source_url": "https://patents.google.com/patent/US4136359A/en",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "microcomputer",
+      "video",
+      "retro-computing"
+    ],
+    "published_year": 1979
+  },
+  {
+    "resource_type": "patent",
+    "title": "Xerography — electrophotography",
+    "summary": "Carlson's electrophotography patent — the dry-toner imaging process that became xerographic copying and laser printing. Expired; the electrostatic-imaging principles remain widely used.",
+    "authors": "Chester F. Carlson",
+    "organization": "Chester F. Carlson",
+    "identifier": "US2297691A",
+    "source_url": "https://patents.google.com/patent/US2297691A/en",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "printing",
+      "electrostatic",
+      "imaging"
+    ],
+    "published_year": 1942
+  },
+  {
+    "resource_type": "patent",
+    "title": "Semisynthetic preparation of Taxol (paclitaxel)",
+    "summary": "A practical semisynthetic route to the anticancer drug Taxol (paclitaxel) via an oxazinone intermediate. The process patent has expired, opening the chemistry for generic manufacture.",
+    "authors": "Robert A. Holton",
+    "organization": "Florida State University",
+    "identifier": "US5015744A",
+    "source_url": "https://patents.google.com/patent/US5015744A/en",
+    "license": "public_domain",
+    "category": "biotech_pharma",
+    "tags": [
+      "oncology",
+      "synthesis",
+      "pharmaceutical"
+    ],
+    "published_year": 1991
+  },
+  {
+    "resource_type": "patent",
+    "title": "Magnetohydrodynamic (MHD) power generation",
+    "summary": "Generating electricity directly from an ionized high-pressure gas stream — magnetohydrodynamic power conversion with no moving parts. Expired; of renewed interest for high-efficiency topping cycles.",
+    "authors": null,
+    "organization": "Commissariat à l'Énergie Atomique (CEA)",
+    "identifier": "US3319089A",
+    "source_url": "https://patents.google.com/patent/US3319089A/en",
+    "license": "public_domain",
+    "category": "clean_energy",
+    "tags": [
+      "mhd",
+      "power-generation",
+      "plasma"
+    ],
+    "published_year": 1967
+  },
+  {
+    "resource_type": "patent",
+    "title": "Lightweight truss-core structural panel",
+    "summary": "Boeing's truss-core sandwich panel — a lightweight, stiff structural panel geometry for aerospace and transport. Expired and open for structural-materials work.",
+    "authors": null,
+    "organization": "The Boeing Company",
+    "identifier": "US4223053A",
+    "source_url": "https://patents.google.com/patent/US4223053A/en",
+    "license": "public_domain",
+    "category": "materials_science",
+    "tags": [
+      "structures",
+      "sandwich-panel",
+      "aerospace"
+    ],
+    "published_year": 1980
+  },
+  {
+    "resource_type": "patent",
+    "title": "Bosch gasoline fuel-injection arrangement",
+    "summary": "An early Bosch fuel-injection arrangement for internal-combustion engines — a precursor to modern electronic fuel injection. Public domain.",
+    "authors": null,
+    "organization": "Robert Bosch GmbH",
+    "identifier": "US3005447A",
+    "source_url": "https://patents.google.com/patent/US3005447A/en",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "engine",
+      "fuel-injection",
+      "automotive"
+    ],
+    "published_year": 1961
+  },
+  {
+    "resource_type": "patent",
+    "title": "Electric drink mixer (blender precursor)",
+    "summary": "One of the earliest electric drink-mixer patents — the motor-driven mixing appliance that evolved into the kitchen blender. Firmly in the public domain.",
+    "authors": null,
+    "organization": null,
+    "identifier": "US1242493A",
+    "source_url": "https://patents.google.com/patent/US1242493A/en",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "appliance",
+      "kitchen",
+      "motor"
+    ],
+    "published_year": 1917
+  },
+  {
+    "resource_type": "patent",
+    "title": "Comb-over method for concealing baldness",
+    "summary": "The famously improbable 'method of concealing partial baldness' (the comb-over) — an issued, now-expired US utility patent. Included as a light-hearted, genuinely public-domain curiosity.",
+    "authors": "Frank J. Smith, Donald J. Smith",
+    "organization": null,
+    "identifier": "US4022227A",
+    "source_url": "https://patents.google.com/patent/US4022227A/en",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "novelty",
+      "grooming",
+      "public-domain"
+    ],
+    "published_year": 1977
+  },
+  {
+    "resource_type": "patent",
+    "title": "RSA public-key cryptography",
+    "summary": "The RSA cryptosystem — public-key encryption and digital signatures based on the difficulty of factoring large numbers. MIT's patent expired in 2000 and RSA is now unencumbered and ubiquitous.",
+    "authors": "Rivest, Shamir, Adleman",
+    "organization": "Massachusetts Institute of Technology",
+    "identifier": "US4405829A",
+    "source_url": "https://patents.google.com/patent/US4405829A/en",
+    "license": "public_domain",
+    "category": "software_ai",
+    "tags": [
+      "cryptography",
+      "encryption",
+      "security"
+    ],
+    "published_year": 1983
+  },
+  {
+    "resource_type": "patent",
+    "title": "Wright brothers' flying machine",
+    "summary": "The Wright brothers' foundational aircraft patent, covering wing-warping roll control for a powered flying machine. Firmly in the public domain — the origin of controlled powered flight.",
+    "authors": "Orville & Wilbur Wright",
+    "organization": null,
+    "identifier": "US821393A",
+    "source_url": "https://patents.google.com/patent/US821393A/en",
+    "license": "public_domain",
+    "category": "industrial_manufacturing",
+    "tags": [
+      "aviation",
+      "aerodynamics",
+      "history"
+    ],
+    "published_year": 1906
+  },
+  {
+    "resource_type": "patent",
+    "title": "Edison incandescent electric lamp",
+    "summary": "Edison's incandescent electric lamp — a high-resistance carbon filament in an evacuated glass bulb. One of the most consequential patents in history, long in the public domain.",
+    "authors": "Thomas A. Edison",
+    "organization": null,
+    "identifier": "US223898A",
+    "source_url": "https://patents.google.com/patent/US223898A/en",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "lighting",
+      "incandescent",
+      "history"
+    ],
+    "published_year": 1880
+  },
+  {
+    "resource_type": "patent",
+    "title": "Bell's telephone (improvement in telegraphy)",
+    "summary": "Alexander Graham Bell's telephone patent — transmitting speech electrically over a wire. Perhaps the most valuable patent ever granted; now public domain.",
+    "authors": "Alexander Graham Bell",
+    "organization": null,
+    "identifier": "US174465A",
+    "source_url": "https://patents.google.com/patent/US174465A/en",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "telephony",
+      "acoustics",
+      "history"
+    ],
+    "published_year": 1876
+  },
+  {
+    "resource_type": "patent",
+    "title": "Barcode — classifying apparatus and method",
+    "summary": "The original barcode patent — optically machine-readable classifying symbols (the 'bull's-eye' code) that evolved into the UPC. Expired and in the public domain.",
+    "authors": "N. J. Woodland, B. Silver",
+    "organization": null,
+    "identifier": "US2612994A",
+    "source_url": "https://patents.google.com/patent/US2612994A/en",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "barcode",
+      "optical",
+      "identification"
+    ],
+    "published_year": 1952
+  },
+  {
+    "resource_type": "patent",
+    "title": "Noyce monolithic integrated circuit",
+    "summary": "Noyce's monolithic integrated-circuit patent — interconnected components on a single silicon chip, the basis of all modern microelectronics. Long expired.",
+    "authors": "Robert N. Noyce",
+    "organization": "Fairchild Semiconductor Corp.",
+    "identifier": "US2981877A",
+    "source_url": "https://patents.google.com/patent/US2981877A/en",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "integrated-circuit",
+      "semiconductor",
+      "history"
+    ],
+    "published_year": 1961
+  },
+  {
+    "resource_type": "patent",
+    "title": "Bell Labs transistor (three-electrode element)",
+    "summary": "The point-contact transistor patent from Bell Labs — the three-electrode semiconductor amplifying device that launched the electronics age. Public domain.",
+    "authors": "Bardeen, Brattain, Shockley",
+    "organization": "Bell Telephone Laboratories",
+    "identifier": "US2524035A",
+    "source_url": "https://patents.google.com/patent/US2524035A/en",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "transistor",
+      "semiconductor",
+      "history"
+    ],
+    "published_year": 1950
+  },
+  {
+    "resource_type": "patent",
+    "title": "Maser / laser communications system",
+    "summary": "The Townes–Schawlow maser/laser patent — stimulated-emission amplification of coherent radiation. Foundational to lasers across manufacturing, medicine, and communications; now expired.",
+    "authors": "Charles H. Townes, Arthur L. Schawlow",
+    "organization": "Bell Telephone Laboratories",
+    "identifier": "US2929922A",
+    "source_url": "https://patents.google.com/patent/US2929922A/en",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "laser",
+      "optics",
+      "history"
+    ],
+    "published_year": 1960
+  },
+  {
+    "resource_type": "patent",
+    "title": "Ballpoint pen writing instrument",
+    "summary": "The Bíró ballpoint-pen patent — a rotating ball delivering quick-drying ink. A ubiquitous everyday product, long in the public domain.",
+    "authors": "László Bíró",
+    "organization": null,
+    "identifier": "US2390636A",
+    "source_url": "https://patents.google.com/patent/US2390636A/en",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "writing",
+      "pen",
+      "history"
+    ],
+    "published_year": 1945
+  },
+  {
+    "resource_type": "patent",
+    "title": "MapReduce — efficient large-scale data processing",
+    "summary": "The MapReduce programming model for processing massive datasets across clusters. Google placed this patent under its Open Patent Non-Assertion Pledge, so it can be freely used in open-source software (it directly inspired Apache Hadoop).",
+    "authors": "Jeffrey Dean, Sanjay Ghemawat",
+    "organization": "Google LLC",
+    "identifier": "US7650331",
+    "source_url": "https://patents.google.com/patent/US7650331/en",
+    "license": "open_patent_pledge",
+    "category": "software_ai",
+    "tags": [
+      "mapreduce",
+      "distributed-systems",
+      "big-data"
+    ],
+    "published_year": 2010
+  },
+  {
+    "resource_type": "patent",
+    "title": "Distributed and parallel large-scale data processing",
+    "summary": "A companion MapReduce patent covering large-scale data processing in a distributed, parallel environment. Pledged royalty-free under Google's OPN Pledge for use in open-source projects.",
+    "authors": "Jeffrey Dean, Sanjay Ghemawat",
+    "organization": "Google LLC",
+    "identifier": "US7756919",
+    "source_url": "https://patents.google.com/patent/US7756919/en",
+    "license": "open_patent_pledge",
+    "category": "software_ai",
+    "tags": [
+      "parallel",
+      "distributed",
+      "data-processing"
+    ],
+    "published_year": 2010
+  },
+  {
+    "resource_type": "patent",
+    "title": "Plus Codes — compact codes for geographic locations",
+    "summary": "The 'plus codes' open-location scheme that encodes any place on Earth into a short alphanumeric code. Covered by Google's OPN Pledge, enabling open addressing systems.",
+    "authors": null,
+    "organization": "Google LLC",
+    "identifier": "US9264857",
+    "source_url": "https://patents.google.com/patent/US9264857/en",
+    "license": "open_patent_pledge",
+    "category": "software_ai",
+    "tags": [
+      "geocoding",
+      "location",
+      "mapping"
+    ],
+    "published_year": 2016
+  },
+  {
+    "resource_type": "patent",
+    "title": "Server-side suggestion of browser preload operations",
+    "summary": "A web-performance technique where the server suggests resources for the browser to preload. Part of Google's OPN-pledged patents, free to use in open-source browsers and servers.",
+    "authors": null,
+    "organization": "Google LLC",
+    "identifier": "US8626763",
+    "source_url": "https://patents.google.com/patent/US8626763/en",
+    "license": "open_patent_pledge",
+    "category": "software_ai",
+    "tags": [
+      "web-performance",
+      "browser",
+      "preloading"
+    ],
+    "published_year": 2014
+  },
+  {
+    "resource_type": "patent",
+    "title": "Predicting user navigation events with directed graphs",
+    "summary": "Predicting a user's next navigation using a directed graph of prior events to prefetch content. Pledged royalty-free under Google's Open Patent Non-Assertion Pledge.",
+    "authors": null,
+    "organization": "Google LLC",
+    "identifier": "US8600921",
+    "source_url": "https://patents.google.com/patent/US8600921/en",
+    "license": "open_patent_pledge",
+    "category": "software_ai",
+    "tags": [
+      "prediction",
+      "graph",
+      "browser"
+    ],
+    "published_year": 2013
+  },
+  {
+    "resource_type": "patent",
+    "title": "Sandia open-source face covering and face-shield designs",
+    "summary": "Open, freely licensed face-covering and face-shield designs released by Sandia National Laboratories under the Open COVID Pledge for pandemic response and beyond.",
+    "authors": null,
+    "organization": "Sandia National Laboratories",
+    "identifier": null,
+    "source_url": "https://opencovidpledge.org/partner-ip/",
+    "license": "open_patent_pledge",
+    "category": "medical_devices",
+    "tags": [
+      "ppe",
+      "open-hardware",
+      "face-shield"
+    ],
+    "published_year": 2020
+  },
+  {
+    "resource_type": "patent",
+    "title": "NASA JPL 3D-printed respirator design",
+    "summary": "NASA JPL's 3D-printable respirator design, pledged for free use under the Open COVID Pledge. A ready reference for open medical-hardware manufacture.",
+    "authors": null,
+    "organization": "NASA Jet Propulsion Laboratory",
+    "identifier": null,
+    "source_url": "https://opencovidpledge.org/partner-ip/",
+    "license": "open_patent_pledge",
+    "category": "medical_devices",
+    "tags": [
+      "respirator",
+      "3d-printing",
+      "open-hardware"
+    ],
+    "published_year": 2020
+  },
+  {
+    "resource_type": "patent",
+    "title": "Intel touchless authentication technology",
+    "summary": "Intel's touchless password/authentication approach, made available royalty-free through the Open COVID Pledge to reduce shared-surface contact.",
+    "authors": null,
+    "organization": "Intel Corporation",
+    "identifier": null,
+    "source_url": "https://opencovidpledge.org/partner-ip/",
+    "license": "open_patent_pledge",
+    "category": "software_ai",
+    "tags": [
+      "authentication",
+      "touchless",
+      "security"
+    ],
+    "published_year": 2020
+  },
+  {
+    "resource_type": "patent",
+    "title": "HPE Wi-Fi–enabled pop-up clinic and hospital design",
+    "summary": "HPE's networked pop-up clinic/hospital design pledged under Open COVID for rapid deployment of connected temporary care facilities.",
+    "authors": null,
+    "organization": "Hewlett Packard Enterprise",
+    "identifier": null,
+    "source_url": "https://opencovidpledge.org/partner-ip/",
+    "license": "open_patent_pledge",
+    "category": "hardware_electronics",
+    "tags": [
+      "networking",
+      "healthcare",
+      "infrastructure"
+    ],
+    "published_year": 2020
+  },
+  {
+    "resource_type": "patent",
+    "title": "Fujitsu computational drug-discovery technique",
+    "summary": "Fujitsu's software techniques to aid drug discovery, made freely available under the Open COVID Pledge to accelerate therapeutic research.",
+    "authors": null,
+    "organization": "Fujitsu Limited",
+    "identifier": null,
+    "source_url": "https://opencovidpledge.org/partner-ip/",
+    "license": "open_patent_pledge",
+    "category": "biotech_pharma",
+    "tags": [
+      "drug-discovery",
+      "computational",
+      "software"
+    ],
+    "published_year": 2020
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Is an artificial limb embodied as a hand? Brain decoding in prosthetic limb users",
+    "summary": "Open-access research published in PLOS Biology (2020), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Roni O. Maimon-Mor; Tamar R. Makin",
+    "organization": "PLOS Biology",
+    "identifier": "10.1371/journal.pbio.3000729",
+    "source_url": "https://doi.org/10.1371/journal.pbio.3000729",
+    "license": "cc_by",
+    "category": "medical_devices",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2020
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Engineering photosynthesis, nature’s carbon capture machine",
+    "summary": "Open-access research published in PLOS Biology (2023), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Megan L. Matthews",
+    "organization": "PLOS Biology",
+    "identifier": "10.1371/journal.pbio.3002183",
+    "source_url": "https://doi.org/10.1371/journal.pbio.3002183",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "carbon",
+      "open-access"
+    ],
+    "published_year": 2023
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Combining Fungal Biopesticides and Insecticide-Treated Bednets to Enhance Malaria Control",
+    "summary": "Open-access research published in PLoS Computational Biology (2009), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Penelope A. Hancock",
+    "organization": "PLoS Computational Biology",
+    "identifier": "10.1371/journal.pcbi.1000525",
+    "source_url": "https://doi.org/10.1371/journal.pcbi.1000525",
+    "license": "cc_by",
+    "category": "general",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2009
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Deep template-based protein structure prediction",
+    "summary": "Open-access research published in PLOS Computational Biology (2021), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Fandi Wu; Jinbo Xu",
+    "organization": "PLOS Computational Biology",
+    "identifier": "10.1371/journal.pcbi.1008954",
+    "source_url": "https://doi.org/10.1371/journal.pcbi.1008954",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "protein",
+      "open-access"
+    ],
+    "published_year": 2021
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "New Approaches to Vaccine Adjuvants: Inhibiting the Inhibitor",
+    "summary": "Open-access research published in PLoS Medicine (2006), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Barney S Graham",
+    "organization": "PLoS Medicine",
+    "identifier": "10.1371/journal.pmed.0030057",
+    "source_url": "https://doi.org/10.1371/journal.pmed.0030057",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2006
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "PSPP: A Protein Structure Prediction Pipeline for Computing Clusters",
+    "summary": "Open-access research published in PLoS ONE (2009), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Michael S. Lee; Rajkumar Bondugula; Valmik Desai",
+    "organization": "PLoS ONE",
+    "identifier": "10.1371/journal.pone.0006254",
+    "source_url": "https://doi.org/10.1371/journal.pone.0006254",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "protein",
+      "open-access"
+    ],
+    "published_year": 2009
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Non Inflammatory Boronate Based Glucose-Responsive Insulin Delivery Systems",
+    "summary": "Open-access research published in PLoS ONE (2012), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Indrani Dasgupta; Eric A. Tanifum; Mayank Srivastava",
+    "organization": "PLoS ONE",
+    "identifier": "10.1371/journal.pone.0029585",
+    "source_url": "https://doi.org/10.1371/journal.pone.0029585",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2012
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Introduction of Environmentally Degradable Parameters to Evaluate the Biodegradability of Biodegradable Polymers",
+    "summary": "Open-access research published in PLoS ONE (2012), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Wenbin Guo; Jian Tao; Chao Yang",
+    "organization": "PLoS ONE",
+    "identifier": "10.1371/journal.pone.0038341",
+    "source_url": "https://doi.org/10.1371/journal.pone.0038341",
+    "license": "cc_by",
+    "category": "materials_science",
+    "tags": [
+      "polymer",
+      "open-access"
+    ],
+    "published_year": 2012
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Hard and Transparent Films Formed by Nanocellulose–TiO2 Nanoparticle Hybrids",
+    "summary": "Open-access research published in  (2012), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Christina Schütz; Jordi Sort; Zoltán Bacsik",
+    "organization": "",
+    "identifier": "10.1371/journal.pone.0045828",
+    "source_url": "https://doi.org/10.1371/journal.pone.0045828",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2012
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Stiffness Dependent Separation of Cells in a Microfluidic Device",
+    "summary": "Open-access research published in PLoS ONE (2013), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Gonghao Wang; Wenbin Mao; Rebecca Byler",
+    "organization": "PLoS ONE",
+    "identifier": "10.1371/journal.pone.0075901",
+    "source_url": "https://doi.org/10.1371/journal.pone.0075901",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "microfluidic",
+      "open-access"
+    ],
+    "published_year": 2013
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Investigating Breast Cancer Cell Behavior Using Tissue Engineering Scaffolds",
+    "summary": "Open-access research published in PLOS ONE (2015), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Khadidiatou Guiro; Shyam A. Patel; Steven J. Greco",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0118724",
+    "source_url": "https://doi.org/10.1371/journal.pone.0118724",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "tissue",
+      "open-access"
+    ],
+    "published_year": 2015
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Highly Conductive Aromatic Functionalized Multi-Walled Carbon Nanotube for Inkjet Printable High Performance Supercapacitor Electrodes",
+    "summary": "Open-access research published in PLOS ONE (2015), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Sanjeev K. Ujjain; Rohit Bhatia; Preety Ahuja",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0131475",
+    "source_url": "https://doi.org/10.1371/journal.pone.0131475",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "carbon",
+      "supercapacitor",
+      "open-access"
+    ],
+    "published_year": 2015
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Surface Modification of Biodegradable Polymers towards Better Biocompatibility and Lower Thrombogenicity",
+    "summary": "Open-access research published in PLOS ONE (2015), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Andreas Rudolph; Michael Teske; Sabine Illner",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0142075",
+    "source_url": "https://doi.org/10.1371/journal.pone.0142075",
+    "license": "cc_by",
+    "category": "materials_science",
+    "tags": [
+      "polymer",
+      "open-access"
+    ],
+    "published_year": 2015
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Drivers of Public Attitudes towards Small Wind Turbines in the UK",
+    "summary": "Open-access research published in PLOS ONE (2016), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Cerian Tatchley; Heather Paton; Emma Robertson",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0152033",
+    "source_url": "https://doi.org/10.1371/journal.pone.0152033",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "wind",
+      "open-access"
+    ],
+    "published_year": 2016
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Involvement of Alternative Splicing in Barley Seed Germination",
+    "summary": "Open-access research published in PLOS ONE (2016), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Qisen Zhang; Xiaoqi Zhang; Songbo Wang",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0152824",
+    "source_url": "https://doi.org/10.1371/journal.pone.0152824",
+    "license": "cc_by",
+    "category": "agritech_food",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2016
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Mapping of Enzyme Kinetics on a Microfluidic Device",
+    "summary": "Open-access research published in PLOS ONE (2016), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Hoon Suk Rho; Alexander Thomas Hanke; Marcel Ottens",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0153437",
+    "source_url": "https://doi.org/10.1371/journal.pone.0153437",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "microfluidic",
+      "enzyme",
+      "open-access"
+    ],
+    "published_year": 2016
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Random Forests for Global and Regional Crop Yield Predictions",
+    "summary": "Open-access research published in PLOS ONE (2016), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Jig Han Jeong; Jonathan P. Resop; Nathaniel D. Mueller",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0156571",
+    "source_url": "https://doi.org/10.1371/journal.pone.0156571",
+    "license": "cc_by",
+    "category": "software_ai",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2016
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Prediction of Potato Crop Yield Using Precision Agriculture Techniques",
+    "summary": "Open-access research published in PLOS ONE (2016), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Khalid A. Al-Gaadi; Abdalhaleem A. Hassaballa; ElKamil Tola",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0162219",
+    "source_url": "https://doi.org/10.1371/journal.pone.0162219",
+    "license": "cc_by",
+    "category": "software_ai",
+    "tags": [
+      "agriculture",
+      "open-access"
+    ],
+    "published_year": 2016
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Quasistatic Cavity Resonance for Ubiquitous Wireless Power Transfer",
+    "summary": "Open-access research published in PLOS ONE (2017), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Matthew J. Chabalko; Mohsen Shahmohammadi; Alanson P. Sample",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0169045",
+    "source_url": "https://doi.org/10.1371/journal.pone.0169045",
+    "license": "cc_by",
+    "category": "hardware_electronics",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2017
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "3D bioprinting of methacrylated hyaluronic acid (MeHA) hydrogel with intrinsic osteogenicity",
+    "summary": "Open-access research published in PLOS ONE (2017), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Michelle T. Poldervaart; Birgit Goversen; Mylene de Ruijter",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0177628",
+    "source_url": "https://doi.org/10.1371/journal.pone.0177628",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "3d",
+      "hydrogel",
+      "open-access"
+    ],
+    "published_year": 2017
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Sutureless microvascular anastomosis assisted by an expandable shape-memory alloy stent",
+    "summary": "Open-access research published in PLOS ONE (2017), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Noriko Saegusa; Shunji Sarukawa; Kunihiro Ohta",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0181520",
+    "source_url": "https://doi.org/10.1371/journal.pone.0181520",
+    "license": "cc_by",
+    "category": "materials_science",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2017
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Membrane filtration device for studying compression of fouling layers in membrane bioreactors",
+    "summary": "Open-access research published in PLOS ONE (2017), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Mads Koustrup Jørgensen; Thomas Vistisen Bugge; Poul Larsen",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0181652",
+    "source_url": "https://doi.org/10.1371/journal.pone.0181652",
+    "license": "cc_by",
+    "category": "materials_science",
+    "tags": [
+      "membrane",
+      "open-access"
+    ],
+    "published_year": 2017
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "A wireless soil moisture sensor powered by solar energy",
+    "summary": "Open-access research published in PLOS ONE (2017), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Mingliang Jiang; Mouchao Lv; Zhong Deng",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0184125",
+    "source_url": "https://doi.org/10.1371/journal.pone.0184125",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "solar",
+      "sensor",
+      "open-access"
+    ],
+    "published_year": 2017
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Analytical model for effects of capsule shape on the healing efficiency in self-healing materials",
+    "summary": "Open-access research published in PLOS ONE (2017), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Zhong Lv; Songpeng Li; Huisu Chen",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0187299",
+    "source_url": "https://doi.org/10.1371/journal.pone.0187299",
+    "license": "cc_by",
+    "category": "general",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2017
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "TV listening and hearing aids",
+    "summary": "Open-access research published in PLOS ONE (2018), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Olaf Strelcyk; Gurjit Singh",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0200083",
+    "source_url": "https://doi.org/10.1371/journal.pone.0200083",
+    "license": "cc_by",
+    "category": "medical_devices",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2018
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "scafSLICR: A MATLAB-based slicing algorithm to enable 3D-printing of tissue engineering scaffolds with heterogeneous porous microarchitecture",
+    "summary": "Open-access research published in PLOS ONE (2019), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Ethan Nyberg; Aine O’Sullivan; Warren Grayson",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0225007",
+    "source_url": "https://doi.org/10.1371/journal.pone.0225007",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "3d",
+      "tissue",
+      "open-access"
+    ],
+    "published_year": 2019
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Study on the dynamic characteristics of rock surrounding a wellbore in energy storage areas during deep geothermal energy mining",
+    "summary": "Open-access research published in PLOS ONE (2020), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Chun Wang; Huai-bin Wang; Mei-zhi Xie",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0237823",
+    "source_url": "https://doi.org/10.1371/journal.pone.0237823",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2020
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Intravaginal poly-(D, L-lactic-co-glycolic acid)-(polyethylene glycol) drug-delivery nanoparticles induce pro-inflammatory responses with Candida albicans infection in a mouse model",
+    "summary": "Open-access research published in PLOS ONE (2020), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Taslima T. Lina; Shemedia J. Johnson; R. Doug Wagner",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0240789",
+    "source_url": "https://doi.org/10.1371/journal.pone.0240789",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2020
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "De novo sequencing and analysis of the transcriptome of two highbush blueberry (Vaccinium corymbosum L.) cultivars ‘Bluecrop’ and ‘Legacy’ at harvest and following post-harvest storage",
+    "summary": "Open-access research published in PLOS ONE (2021), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "María Cárcamo de la Concepción; Daniel James Sargent; Nada Šurbanovski",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0255139",
+    "source_url": "https://doi.org/10.1371/journal.pone.0255139",
+    "license": "cc_by",
+    "category": "agritech_food",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2021
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Improved targeting of human CD4+ T cells by nanobody-modified AAV2 gene therapy vectors",
+    "summary": "Open-access research published in PLOS ONE (2021), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Martin V. Hamann; Niklas Beschorner; Xuan-Khang Vu",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0261269",
+    "source_url": "https://doi.org/10.1371/journal.pone.0261269",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2021
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Algorithm for wireless sensor networks in ginseng field in precision agriculture",
+    "summary": "Open-access research published in PLOS ONE (2022), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Changcheng Li; Deyun Chen; Chengjun Xie",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0263401",
+    "source_url": "https://doi.org/10.1371/journal.pone.0263401",
+    "license": "cc_by",
+    "category": "software_ai",
+    "tags": [
+      "sensor",
+      "agriculture",
+      "open-access"
+    ],
+    "published_year": 2022
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "A new perspective when examining maize fertilizer nitrogen use efficiency, incrementally",
+    "summary": "Open-access research published in PLOS ONE (2022), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Newell R. Kitchen; Curtis J. Ransom; James S. Schepers",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0267215",
+    "source_url": "https://doi.org/10.1371/journal.pone.0267215",
+    "license": "cc_by",
+    "category": "general",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2022
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "“If it is not made easy for me, I will just not bother”. A qualitative exploration of the barriers and facilitators to recycling plastics",
+    "summary": "Open-access research published in PLOS ONE (2022), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Deborah Roy; Emma Berry; Martin Dempster",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0267284",
+    "source_url": "https://doi.org/10.1371/journal.pone.0267284",
+    "license": "cc_by",
+    "category": "industrial_manufacturing",
+    "tags": [
+      "recycling",
+      "open-access"
+    ],
+    "published_year": 2022
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Fixed vs. variable light quality in vertical farming: Impacts on vegetative growth and nutritional quality of lettuce",
+    "summary": "Open-access research published in PLOS ONE (2023), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Yuyao Kong; Krishna Nemali",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0285180",
+    "source_url": "https://doi.org/10.1371/journal.pone.0285180",
+    "license": "cc_by",
+    "category": "agritech_food",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2023
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Heat shock exposure during early wheat grain development can reduce maximum endosperm cell number but not necessarily final grain dry mass",
+    "summary": "Open-access research published in PLOS ONE (2023), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Christine Girousse",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0285218",
+    "source_url": "https://doi.org/10.1371/journal.pone.0285218",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2023
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Optimal power–heat–carbon scheduling strategy for interconnected heterogeneous multi-microgrid considering hydrogen fuel cell vehicles",
+    "summary": "Open-access research published in PLOS ONE (2024), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Dahu Li; Zirui Shao; Wentao Huang",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0301333",
+    "source_url": "https://doi.org/10.1371/journal.pone.0301333",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "fuel-cell",
+      "hydrogen",
+      "carbon",
+      "open-access"
+    ],
+    "published_year": 2024
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Effects of hydrogen permeation on the mechanical characteristics of electroless nickel-plated free-cutting steel for application to the hydrogen valves of hydrogen fuel cell electric vehicles",
+    "summary": "Open-access research published in PLOS ONE (2024), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Dong-Ho Shin; Seong-Jong Kim",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0302972",
+    "source_url": "https://doi.org/10.1371/journal.pone.0302972",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "fuel-cell",
+      "hydrogen",
+      "open-access"
+    ],
+    "published_year": 2024
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Development of low-cost micro-fabrication procedures for planar micro-thermoelectric generators based on thin-film technology for energy harvesting applications",
+    "summary": "Open-access research published in PLOS ONE (2024), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Sobhy M. Abdelkader; Donart Nayebare; Tamer F. Megahed",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0306540",
+    "source_url": "https://doi.org/10.1371/journal.pone.0306540",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2024
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Controllable synthesis of TiO2/graphene composites for human voice recognition in strain sensor",
+    "summary": "Open-access research published in PLOS ONE (2024), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Yan Cheng; Ke Wang; Siyi Zhang",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0306866",
+    "source_url": "https://doi.org/10.1371/journal.pone.0306866",
+    "license": "cc_by",
+    "category": "materials_science",
+    "tags": [
+      "graphene",
+      "sensor",
+      "open-access"
+    ],
+    "published_year": 2024
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Economic effects of livestock disease burden in Ethiopia: A computable general equilibrium analysis",
+    "summary": "Open-access research published in PLOS ONE (2024), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Amanda M. Countryman; Taís C. de Menezes; Dustin L. Pendell",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0310268",
+    "source_url": "https://doi.org/10.1371/journal.pone.0310268",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2024
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Comparison of the antibiotic resistance mechanisms in a gram-positive and a gram-negative bacterium by gene networks analysis",
+    "summary": "Open-access research published in PLOS ONE (2024), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Nafiseh Davati; Abozar Ghorbani",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0311434",
+    "source_url": "https://doi.org/10.1371/journal.pone.0311434",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2024
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Induction of MASH in three-dimensional bioprinted human liver tissue",
+    "summary": "Open-access research published in PLOS ONE (2024), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Vaidehi Joshi; Dwayne Carter; Alice E. Chen",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0312615",
+    "source_url": "https://doi.org/10.1371/journal.pone.0312615",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "tissue",
+      "open-access"
+    ],
+    "published_year": 2024
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Correction: Controllable synthesis of TiO2/graphene composites for human voice recognition in strain sensor",
+    "summary": "Open-access research published in PLOS ONE (2025), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Yan Cheng; Ke Wang; Siyi Zhang",
+    "organization": "PLOS ONE",
+    "identifier": "10.1371/journal.pone.0320024",
+    "source_url": "https://doi.org/10.1371/journal.pone.0320024",
+    "license": "cc_by",
+    "category": "materials_science",
+    "tags": [
+      "graphene",
+      "sensor",
+      "open-access"
+    ],
+    "published_year": 2025
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Analysis of proposed carbon capture projects in the US power sector and co-location with environmental justice communities",
+    "summary": "Open-access research published in PLOS One (2025), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Yukyan Lam; Jennifer Ventrella; Ana Isabel Baptista",
+    "organization": "PLOS One",
+    "identifier": "10.1371/journal.pone.0323817",
+    "source_url": "https://doi.org/10.1371/journal.pone.0323817",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "carbon",
+      "open-access"
+    ],
+    "published_year": 2025
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Valorization of various lignocellulosic wastes to Ganoderma lucidum (Curtis) P. Karst (Reishi Mushroom) cultivation and their FT-IR assessments",
+    "summary": "Open-access research published in PLOS One (2025), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Caglar Akcay; Recai Arslan; Faik Ceylan",
+    "organization": "PLOS One",
+    "identifier": "10.1371/journal.pone.0328732",
+    "source_url": "https://doi.org/10.1371/journal.pone.0328732",
+    "license": "cc_by",
+    "category": "biotech_pharma",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2025
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Identification of QTLs with effects on seed coat appearance in cowpea",
+    "summary": "Open-access research published in PLOS One (2025), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Abdoul Moumouni Iro Sodo; Christian Fatokun; Bunmi Olasanmi",
+    "organization": "PLOS One",
+    "identifier": "10.1371/journal.pone.0333353",
+    "source_url": "https://doi.org/10.1371/journal.pone.0333353",
+    "license": "cc_by",
+    "category": "agritech_food",
+    "tags": [
+      "open-access"
+    ],
+    "published_year": 2025
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Testing a bat fatality detection system at wind turbines",
+    "summary": "Open-access research published in PLOS One (2025), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Sara P. Weaver; Jon D. Ritter; Alexis M. Commiskey",
+    "organization": "PLOS One",
+    "identifier": "10.1371/journal.pone.0334609",
+    "source_url": "https://doi.org/10.1371/journal.pone.0334609",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "wind",
+      "open-access"
+    ],
+    "published_year": 2025
+  },
+  {
+    "resource_type": "research_paper",
+    "title": "Defect induced improved capacitive performance of MnS incorporated MoO3 nanocomposite for supercapacitor electrodes in aqueous electrolytes",
+    "summary": "Open-access research published in PLOS One (2026), licensed CC BY 4.0 — free to read, reuse, and build upon with attribution.",
+    "authors": "Mizanur Rahaman; Mehedi Hasan Prince; Saif Mahmud Bijoy",
+    "organization": "PLOS One",
+    "identifier": "10.1371/journal.pone.0349019",
+    "source_url": "https://doi.org/10.1371/journal.pone.0349019",
+    "license": "cc_by",
+    "category": "clean_energy",
+    "tags": [
+      "supercapacitor",
+      "open-access"
+    ],
+    "published_year": 2026
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Aspirin — genericized trademark, now free to use",
+    "summary": "Once Bayer's trademark, 'aspirin' was ruled generic in the United States (Bayer Co. v. United Drug Co., 1921) and is now a free common name for acetylsalicylic acid.",
+    "authors": null,
+    "organization": "Bayer AG",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "trademark",
+      "generic",
+      "acetylsalicylic"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Cellophane — genericized trademark, now free to use",
+    "summary": "DuPont's 'cellophane' became generic in the US (DuPont Cellophane Co. v. Waxed Products, 1936); the term now freely denotes transparent regenerated-cellulose film.",
+    "authors": null,
+    "organization": "DuPont",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "materials_science",
+    "tags": [
+      "trademark",
+      "generic",
+      "transparent"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Escalator — genericized trademark, now free to use",
+    "summary": "Otis lost the 'escalator' trademark to genericide in 1950; the word is now the ordinary term for a moving staircase.",
+    "authors": null,
+    "organization": "Otis Elevator Company",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "industrial_manufacturing",
+    "tags": [
+      "trademark",
+      "generic",
+      "moving"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Thermos — genericized trademark, now free to use",
+    "summary": "A US court ruled 'thermos' generic in 1963 (King-Seeley Thermos Co. v. Aladdin); it now freely means a vacuum-insulated container.",
+    "authors": null,
+    "organization": "Thermos GmbH",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "trademark",
+      "generic",
+      "vacuum-insulated"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Zipper — genericized trademark, now free to use",
+    "summary": "Originally B.F. Goodrich's trademark for its galoshes' slide fastener, 'zipper' became the generic name for the interlocking fastener.",
+    "authors": null,
+    "organization": "B.F. Goodrich",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "trademark",
+      "generic",
+      "interlocking"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Trampoline — genericized trademark, now free to use",
+    "summary": "Coined and trademarked by George Nissen, 'trampoline' passed into generic use for the rebound apparatus.",
+    "authors": null,
+    "organization": "Griswold-Nissen Trampoline & Tumbling Co.",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "trademark",
+      "generic",
+      "rebound"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Dry Ice — genericized trademark, now free to use",
+    "summary": "Trademarked in 1925, 'dry ice' became the generic name for solid carbon dioxide used in cooling and cleaning.",
+    "authors": null,
+    "organization": "Dry Ice Corporation of America",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "materials_science",
+    "tags": [
+      "trademark",
+      "generic",
+      "solid"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Kerosene — genericized trademark, now free to use",
+    "summary": "Gesner's 1854 trademark 'kerosene' became the generic term for the refined petroleum lamp/heating fuel.",
+    "authors": null,
+    "organization": "Abraham Gesner",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "clean_energy",
+    "tags": [
+      "trademark",
+      "generic",
+      "refined"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Linoleum — genericized trademark, now free to use",
+    "summary": "Widely cited as the first trademark to become generic (UK, 1878) — 'linoleum' now freely denotes the linseed-oil-based floor covering.",
+    "authors": null,
+    "organization": "Frederick Walton",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "materials_science",
+    "tags": [
+      "trademark",
+      "generic",
+      "linseed-oil"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Laundromat — genericized trademark, now free to use",
+    "summary": "Westinghouse's 'Laundromat' became the generic US term for a self-service coin-operated laundry.",
+    "authors": null,
+    "organization": "Westinghouse",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "trademark",
+      "generic",
+      "self-service"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Videotape — genericized trademark, now free to use",
+    "summary": "Ampex's 'videotape' passed into generic use for magnetic tape used to record video.",
+    "authors": null,
+    "organization": "Ampex Corporation",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "trademark",
+      "generic",
+      "magnetic"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Yo-yo — genericized trademark, now free to use",
+    "summary": "Duncan's 'Yo-Yo' trademark was ruled generic (1965) after the term became the common name for the spinning string toy.",
+    "authors": null,
+    "organization": "Duncan Toys Company",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "consumer_products",
+    "tags": [
+      "trademark",
+      "generic",
+      "spinning"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Mimeograph — genericized trademark, now free to use",
+    "summary": "A.B. Dick's 'Mimeograph' became the generic name for the stencil-based duplicating machine widely used before photocopiers.",
+    "authors": null,
+    "organization": "A.B. Dick Company",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "industrial_manufacturing",
+    "tags": [
+      "trademark",
+      "generic",
+      "stencil"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Teleprompter — genericized trademark, now free to use",
+    "summary": "The 'TelePrompTer' trademark genericized into 'teleprompter', the ordinary word for a scrolling speech-display device.",
+    "authors": null,
+    "organization": "TelePrompTer Corporation",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "trademark",
+      "generic",
+      "speech-scrolling"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Touch-tone — genericized trademark, now free to use",
+    "summary": "AT&T's 'Touch-Tone' mark for DTMF dialing passed into generic use for tone-based telephone dialing.",
+    "authors": null,
+    "organization": "AT&T",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "hardware_electronics",
+    "tags": [
+      "trademark",
+      "generic",
+      "dtmf"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Dumpster — genericized trademark, now free to use",
+    "summary": "From Dempster Brothers' 'Dumpster' (Dempster-Dumpster system); the trademark was cancelled and the word is now generic for a large mobile waste container.",
+    "authors": null,
+    "organization": "Dempster Brothers, Inc.",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "industrial_manufacturing",
+    "tags": [
+      "trademark",
+      "generic",
+      "mobile"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Super Glue — genericized trademark, now free to use",
+    "summary": "'Super Glue' became a generic term for fast-setting cyanoacrylate adhesive after widespread descriptive use.",
+    "authors": null,
+    "organization": "Loctite Corporation",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "materials_science",
+    "tags": [
+      "trademark",
+      "generic",
+      "cyanoacrylate"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Hovercraft — genericized trademark, now free to use",
+    "summary": "Saunders-Roe's 'hovercraft' became the generic name for the air-cushion vehicle.",
+    "authors": null,
+    "organization": "Saunders-Roe",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "industrial_manufacturing",
+    "tags": [
+      "trademark",
+      "generic",
+      "air-cushion"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Lanolin — genericized trademark, now free to use",
+    "summary": "'Lanolin' passed into generic use as the common name for purified wool wax used in cosmetics and pharmaceuticals.",
+    "authors": null,
+    "organization": null,
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "biotech_pharma",
+    "tags": [
+      "trademark",
+      "generic",
+      "purified"
+    ],
+    "published_year": null
+  },
+  {
+    "resource_type": "trademark",
+    "title": "Quonset hut — genericized trademark, now free to use",
+    "summary": "'Quonset', from Great Lakes Steel's prefabricated arched building, became the generic term for the lightweight semicylindrical structure.",
+    "authors": null,
+    "organization": "Great Lakes Steel Corporation",
+    "identifier": null,
+    "source_url": "https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks",
+    "license": "public_domain",
+    "category": "industrial_manufacturing",
+    "tags": [
+      "trademark",
+      "generic",
+      "prefabricated"
+    ],
+    "published_year": null
+  }
+]

@@ -1,0 +1,14 @@
+{
+    admin off
+    auto_https disable_redirects
+}
+
+https://localhost:18448 {
+    tls /certs/localhost.crt /certs/localhost.key
+    reverse_proxy synapse:8008
+}
+
+https://localhost:18449 {
+    tls /certs/localhost.crt /certs/localhost.key
+    reverse_proxy element:80
+}

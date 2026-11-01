@@ -1,0 +1,18 @@
+[Unit]
+Description=Saha private admin console (Next.js)
+After=network-online.target saha-backend.service
+Wants=network-online.target
+PartOf=saha.service
+
+[Service]
+Type=simple
+User=@USER@
+WorkingDirectory=@REPO@/apps/admin
+ExecStart=/usr/bin/pnpm exec next start -p 3002 -H 127.0.0.1
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

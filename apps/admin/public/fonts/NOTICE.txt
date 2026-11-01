@@ -1,0 +1,23 @@
+Geist: Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font)
+Fraunces: Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces)
+
+These fonts are licensed under the SIL Open Font License 1.1, included in OFL-1.1.txt.
+Original family references:
+https://github.com/google/fonts/tree/main/ofl/geist
+https://github.com/google/fonts/tree/main/ofl/fraunces
+
+Unmodified WOFF2 subsets recovered from Saha's existing August 2026 Next.js
+build (Google Fonts). CSS retains its original weights, unicode ranges and
+fallback metrics. This removes a network dependency during builds and avoids
+third-party font requests from users. No application source-code license is
+selected by including these third-party notices.
+
+SHA-256 hashes of bundled original font files:
+f639721981034f88-s.woff2  b7a545bbb08256bd809f11cfe66d88da3e22d169ea4407737b1ef0ec1ed3d791
+9766a7e9e2e0ad5a-s.woff2  6129fc8571c3e0cb0a4c41f5160c974a843b055009dc4ad8858bd808e18a2d86
+b66cf8e69499582a-s.woff2  f689f638f29fff460a2d5749edb5d5c38d7bef0389f32032d871f23fc6ebb008
+aa016aab0e6d1295-s.woff2  58a6b173d5ca1dec92166ea3c6cb1a84a4144556d10928ac14e8e6b40e4787bd
+22a5144ee8d83bca-s.p.woff2  9b6f5ff45b278c744b5f379a2c4ecbaf858a842b8eaf82ac8d21b699ca16c608
+7452ca4a93358909-s.woff2  7e3c04662669cd2b8ee672e4e5d63146d21f6aa36654b211718af5fe0bb3bd51
+e0ecb571b51ea3b5-s.woff2  f120089b9440f3e35a980a2137347b1851ad46ee4b8ad5c63b6c07e053fa40e2
+6e8c7cb283336a9d-s.p.woff2  48282a415ec22e31beaf0a0666e6fae0c8cbddcd0b1f6e729f27c3ade8a64e43

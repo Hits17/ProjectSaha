@@ -1,0 +1,48 @@
+name: saha-chat
+services:
+  chat-db:
+    image: ${CHAT_POSTGRES_IMAGE:?Select a reviewed pinned postgres image tag or digest}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: synapse
+      POSTGRES_DB: synapse
+      POSTGRES_PASSWORD: ${CHAT_POSTGRES_PASSWORD:?Set a random database password}
+      POSTGRES_INITDB_ARGS: --encoding=UTF8 --locale=C
+    volumes:
+      - chat-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U synapse -d synapse"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [chat-data]
+  synapse:
+    image: ${CHAT_SYNAPSE_IMAGE:?Select a reviewed pinned official Synapse image tag or digest}
+    restart: unless-stopped
+    depends_on:
+      chat-db:
+        condition: service_healthy
+    environment:
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+    ports:
+      - "127.0.0.1:8008:8008"
+    volumes:
+      - ./generated/homeserver.yaml:/data/homeserver.yaml:ro
+      - ./generated/log.config:/data/log.config:ro
+      - chat-synapse:/data
+    networks: [chat-data, chat-web]
+  element:
+    image: ${CHAT_ELEMENT_IMAGE:?Select a reviewed pinned official Element Web image tag or digest}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8088:80"
+    volumes:
+      - ./generated/element.json:/app/config.json:ro
+    networks: [chat-web]
+networks:
+  chat-data:
+    internal: true
+  chat-web:
+volumes:
+  chat-postgres:
+  chat-synapse:

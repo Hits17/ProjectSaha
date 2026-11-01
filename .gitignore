@@ -1,0 +1,29 @@
+node_modules/
+.next/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.env.local
+*.log
+apps/admin/tsconfig.tsbuildinfo
+graphify-out/
+
+# Local backups taken during the 2026-08-05 security hardening — contain secrets.
+.security-backup/
+
+# Pending-deploy credentials — contains secrets.
+saha-dev-infra/.env
+saha-dev-infra/.env.pending-deploy
+saha-dev-infra/chat/generated/
+saha-dev-infra/local-checks/generated/
+
+# Publication checkout: keep new local configurations and key material private.
+.env.*
+!.env.example
+*.tsbuildinfo
+*.pem
+*.key
+*.p12
+*.pfx

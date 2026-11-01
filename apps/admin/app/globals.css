@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* Saha’s shared forest / sage / paper palette, mapped to console utilities. */
+@theme {
+  --color-slate-50: #f7f8f5;
+  --color-slate-100: #f0f4ef;
+  --color-slate-200: #e0e7df;
+  --color-slate-300: #c6d3c8;
+  --color-slate-400: #61736a;
+  --color-slate-500: #61736a;
+  --color-slate-600: #465f55;
+  --color-slate-700: #28463e;
+  --color-slate-800: #213c33;
+  --color-slate-900: #192e29;
+  --color-slate-950: #13271f;
+  --color-indigo-50: #f0f7f1;
+  --color-indigo-100: #e5f1e8;
+  --color-indigo-400: #398260;
+  --color-indigo-500: #2c7858;
+  --color-indigo-600: #246b50;
+  --color-indigo-700: #19543d;
+}
+body { background: #f7f8f5; color: #192e29; font-family: Geist, system-ui, sans-serif; line-height: 1.6; }
+h1, h2, h3 { letter-spacing: -.025em; text-wrap: balance; }
+:where(a, button, input, select, textarea, summary):focus-visible { outline: 2px solid #246b50; outline-offset: 3px; }
+button:not(:disabled), summary { cursor: pointer; }
+input, select, button { min-height: 2.5rem; }
+input[type=checkbox], input[type=radio] { min-height: auto; accent-color: #246b50; }
+.skip-link { position: fixed; left: 1rem; top: -5rem; z-index: 100; padding: .75rem 1rem; background: #192e29; color: white; border-radius: .5rem; }
+.skip-link:focus { top: .75rem; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }

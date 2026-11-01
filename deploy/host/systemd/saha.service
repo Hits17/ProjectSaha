@@ -1,0 +1,12 @@
+[Unit]
+Description=Saha application stack
+Requires=saha-infra.service postgresql.service saha-backend.service saha-frontend.service saha-admin.service nginx.service
+After=saha-infra.service postgresql.service saha-backend.service saha-frontend.service saha-admin.service nginx.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/true
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,337 @@
+#!/usr/bin/env python3
+"""Control the existing Saha host services without publishing unready apps."""
+import argparse
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "apps/backend"))
+from app.core.release import source_fingerprint
+STACK = json.loads((ROOT / "deploy/host/stack.json").read_text())
+APPS = ["saha-backend", "saha-frontend", "saha-admin"]
+
+
+def systemctl(action, *units):
+    prefix = [] if os.geteuid() == 0 else ["sudo"]
+    subprocess.run(prefix + ["systemctl", action, *units], check=True)
+
+
+def http_probe(url, host=None):
+    # Do not allow ambient proxy variables to redirect local readiness checks.
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    headers = {"User-Agent": "Saha-CLI/1.0", "Accept": "application/json"}
+    if host:
+        headers["Host"] = host
+    request = urllib.request.Request(url, headers=headers)
+    try:
+        response = opener.open(request, timeout=4)
+    except urllib.error.HTTPError as exc:
+        response = exc
+    except (OSError, urllib.error.URLError):
+        return {"status": 0, "ready": False, "reason": "connection/TLS/DNS unavailable"}
+    with response:
+        body = response.read(65536)
+        code = response.status
+        result = {"status": code, "ready": False,
+                  "server": response.headers.get("Server", ""),
+                  "ray": response.headers.get("CF-Ray", ""),
+                  "mitigated": response.headers.get("CF-Mitigated", "")}
+        result["build"] = response.headers.get("X-Saha-Build", "")
+        final_host = urllib.parse.urlsplit(response.geturl()).hostname
+        requested_host = urllib.parse.urlsplit(url).hostname
+        same_public_site = requested_host in STACK["public_hosts"] and final_host in STACK["public_hosts"]
+        if result["mitigated"].lower() == "challenge":
+            result["reason"] = "Cloudflare challenge"
+        elif final_host != requested_host and not same_public_site:
+            result["reason"] = "redirected to another host (possible access/login gateway)"
+        else:
+            try:
+                data = json.loads(body)
+            except (ValueError, UnicodeError):
+                data = None
+            result["ready"] = code == 200 and isinstance(data, dict) and data.get("status") == "ready" and data.get("postgres") == "healthy" and data.get("redis") == "healthy"
+            if code == 200 and not result["ready"]:
+                result["reason"] = "HTTP 200 without Saha readiness JSON"
+            elif code == 403:
+                result["reason"] = "HTTP 403; origin versus edge denial is not yet established"
+        return result
+
+
+def http_status(url):
+    return http_probe(url)["status"]
+
+
+def ready():
+    return (http_probe(f"http://127.0.0.1:{STACK['public_nginx_port']}/health/ready")["ready"]
+            and http_status(f"http://127.0.0.1:{STACK['public_nginx_port']}/") == 200
+            and http_status(f"http://127.0.0.1:{STACK['admin_nginx_port']}/") == 200)
+
+
+def wait_ready(seconds=45):
+    deadline = time.monotonic() + seconds
+    while True:
+        if ready():
+            return
+        if time.monotonic() >= deadline:
+            raise RuntimeError("Saha did not become ready through nginx. The tunnel was not started. Run saha status and inspect service logs.")
+        time.sleep(2)
+
+
+def online():
+    require_mapping()
+    if not ready():
+        raise RuntimeError("Local Saha is not ready through nginx; refusing to expose it. Run saha start --local, then saha status.")
+    if versions(public=False):
+        raise RuntimeError("Running local builds do not match current source. Restart the updated services before opening the tunnel.")
+    systemctl("start", "cloudflared")
+    deadline = time.monotonic() + 30
+    while True:
+        public = http_probe(STACK["public_url"] + "/health/ready")
+        if public["ready"] or time.monotonic() >= deadline:
+            break
+        time.sleep(2)
+    if not public["ready"]:
+        raise RuntimeError(f"Tunnel start requested, but public readiness returned HTTP {public['status'] or 'unreachable'} ({public.get('reason', 'not ready')}). Run saha diagnose; online status is not confirmed.")
+    if versions():
+        raise RuntimeError("Public readiness passed, but the served build identities are not verified. Run saha versions to locate the mismatch.")
+    print(f"Online: {STACK['public_url']} (readiness HTTP 200)")
+
+
+def routes():
+    print(f"Public: {', '.join(STACK['public_hosts'])} -> Cloudflare Tunnel -> nginx :{STACK['public_nginx_port']}")
+    print(f"  /api/* and /health* -> 127.0.0.1:{STACK['backend_port']}")
+    print(f"  web pages -> 127.0.0.1:{STACK['frontend_port']}")
+    print(f"Private admin: nginx :{STACK['admin_nginx_port']} -> 127.0.0.1:{STACK['admin_port']} (API -> :{STACK['backend_port']})")
+    print("Chat remains local testing only; no new public tunnel routes.")
+
+
+def diagnose():
+    probes = [
+        ("Backend", f"http://127.0.0.1:{STACK['backend_port']}/health/ready", None),
+        ("nginx with public Host", f"http://127.0.0.1:{STACK['public_nginx_port']}/health/ready", STACK["public_hosts"][0]),
+        ("Public via Cloudflare", STACK["public_url"] + "/health/ready", None),
+    ]
+    results = []
+    for label, url, host in probes:
+        result = http_probe(url, host)
+        results.append(result)
+        print(f"{label}: HTTP {result['status'] or 'unreachable'}; Saha ready: {result['ready']}")
+        for name in ("reason", "server", "mitigated", "ray"):
+            if result.get(name):
+                print(f"  {name}: {result[name]}")
+    if results[1]["ready"] and not results[2]["ready"]:
+        print("Local nginx accepts the public hostname. Investigate Cloudflare security/Access events, tunnel ingress and public DNS; this does not call for rebuilding the app.")
+    return 0 if all(result["ready"] for result in results) else 1
+
+
+def versions(public=True):
+    problems = build_problems()
+    for problem in problems:
+        print("FAIL " + problem)
+    expected = {app: (ROOT / "apps" / app / ".next/BUILD_ID").read_text().strip()
+                for app in ("frontend", "admin") if (ROOT / "apps" / app / ".next/BUILD_ID").exists()}
+    expected["backend"] = "backend-" + source_fingerprint(ROOT / "apps/backend")[:20]
+    checks = [
+        ("Local web via nginx", "frontend", f"http://127.0.0.1:{STACK['public_nginx_port']}/"),
+        ("Local backend via nginx", "backend", f"http://127.0.0.1:{STACK['public_nginx_port']}/health/live"),
+        ("Private admin via nginx", "admin", f"http://127.0.0.1:{STACK['admin_nginx_port']}/"),
+    ]
+    if public:
+        checks.extend([
+            ("Public web via tunnel", "frontend", STACK["public_url"] + "/"),
+            ("Public backend via tunnel", "backend", STACK["public_url"] + "/health/live"),
+        ])
+    for label, app, url in checks:
+        result = http_probe(url)
+        actual = result.get("build", "")
+        matches = result["status"] == 200 and actual and actual == expected.get(app)
+        print(f"{'PASS' if matches else 'UNVERIFIED'} {label}: HTTP {result['status'] or 'unreachable'}, served={actual or 'missing'}, expected={expected.get(app, 'missing')}")
+        if not matches:
+            problems.append(label)
+    return 1 if problems else 0
+
+
+def require_mapping():
+    if not Path("/etc/systemd/system/saha.service").is_file():
+        raise RuntimeError(f"Grouped service is not installed. First validate/apply {ROOT / 'scripts/install-host.py'}; existing services have not been changed.")
+    problems = build_problems()
+    if problems:
+        raise RuntimeError("; ".join(problems) + ". Stop the apps and run saha build before starting this release.")
+
+
+def build_problems():
+    problems = []
+    for app in ("frontend", "admin"):
+        build = ROOT / "apps" / app / ".next"
+        if not (build / "BUILD_ID").is_file():
+            problems.append(f"Missing production build for {app}")
+        else:
+            chunks = list((build / "static").rglob("*.js"))
+            if not chunks:
+                problems.append(f"Missing production browser assets for {app}")
+            elif any("http://localhost:8000" in chunk.read_text(errors="replace") for chunk in chunks):
+                problems.append(f"{app} has an old build pointing visitors at localhost:8000")
+            required = {"frontend": ["/explore/page", "/projects/page", "/institutions/page", "/(dashboard)/dashboard/collections/page"],
+                        "admin": ["/(console)/institutions/page"]}[app]
+            try:
+                routes = json.loads((build / "server/app-paths-manifest.json").read_text())
+                for route in required:
+                    if route not in routes:
+                        problems.append(f"{app} build is missing current route {route}")
+                receipt = json.loads((build / "saha-build.json").read_text())
+                if receipt.get("source_sha256") != source_fingerprint(ROOT / "apps" / app):
+                    problems.append(f"{app} source changed since its recorded build")
+                if receipt.get("build_id") != (build / "BUILD_ID").read_text().strip():
+                    problems.append(f"{app} build ID does not match its release receipt")
+            except (OSError, ValueError):
+                problems.append(f"{app} has no valid current release receipt/route manifest; rebuild with saha build")
+    return problems
+
+
+def build():
+    for app in ("saha-frontend", "saha-admin"):
+        result = subprocess.run(["systemctl", "is-active", app], capture_output=True, text=True)
+        if result.returncode != 3 or result.stdout.strip() not in ("inactive", "failed"):
+            raise RuntimeError(f"Cannot confirm {app} is stopped. Run saha stop first; refusing to overwrite a potentially served build.")
+    subprocess.run(["node", str(ROOT / "scripts/verify-js-dependencies.cjs")], check=True)
+    backup = Path.home() / ".local/state/saha/build-backups" / str(time.time_ns())
+    backup.mkdir(parents=True, mode=0o700)
+    moved = []
+    touched = []
+    environment = {**os.environ, "NODE_ENV": "production", "NEXT_PUBLIC_API_URL": "", "NEXT_TELEMETRY_DISABLED": "1"}
+    try:
+        for app in ("frontend", "admin"):
+            directory = ROOT / "apps" / app
+            output = directory / ".next"
+            if output.is_symlink():
+                raise RuntimeError("Refusing to replace a symlinked build; use the release-specific deployment procedure.")
+            if output.exists():
+                shutil.move(str(output), str(backup / app))
+                moved.append(app)
+            touched.append(app)
+            fingerprint = source_fingerprint(directory)
+            build_id = app + "-" + fingerprint[:20]
+            subprocess.run(["pnpm", "build"], cwd=directory, env={**environment, "SAHA_BUILD_ID": build_id}, check=True)
+            (output / "saha-build.json").write_text(json.dumps({"build_id": build_id, "source_sha256": fingerprint}, indent=2) + "\n")
+        problems = build_problems()
+        if problems:
+            raise RuntimeError("; ".join(problems))
+    except BaseException:
+        for app in touched:
+            output = ROOT / "apps" / app / ".next"
+            if output.exists():
+                shutil.rmtree(output)
+        for app in moved:
+            shutil.move(str(backup / app), str(ROOT / "apps" / app / ".next"))
+        raise
+    print(f"Both production builds completed. Previous builds: {backup}")
+    print("Services remain stopped. Apply reviewed schema migrations before saha start --local.")
+
+
+def doctor():
+    routes()
+    problems = []
+    for unit in (ROOT / "deploy/host/systemd").glob("*.service"):
+        expected = unit.read_text().replace("@REPO@", str(ROOT)).replace("@USER@", ROOT.owner())
+        installed = Path("/etc/systemd/system") / unit.name
+        if not installed.exists() or installed.read_text() != expected:
+            problems.append(f"Install/update {installed}")
+    for source, destination in [
+        ("00-saha-proxy.conf", "/etc/nginx/conf.d/00-saha-proxy.conf"),
+        ("saha-proxy-headers.conf", "/etc/nginx/snippets/saha-proxy-headers.conf"),
+        ("saha-marketplace", "/etc/nginx/sites-available/saha-marketplace"),
+        ("saha-admin", "/etc/nginx/sites-available/saha-admin"),
+    ]:
+        installed = Path(destination)
+        if not installed.exists() or installed.read_text() != (ROOT / "deploy/host/nginx" / source).read_text():
+            problems.append(f"Install/update {destination}")
+    tunnel = Path(STACK["tunnel_config"])
+    if tunnel.exists():
+        result = subprocess.run(["cloudflared", "tunnel", "--config", str(tunnel), "ingress", "validate"], capture_output=True, text=True)
+        if result.returncode:
+            problems.append("Existing Cloudflare ingress validation failed")
+    else:
+        problems.append(f"Missing tunnel config: {tunnel}")
+    wiring_problems = bool(problems)
+    problems.extend(build_problems())
+    if problems:
+        print("Host wiring still needs installation/checks:")
+        for problem in problems:
+            print("  - " + problem)
+        if wiring_problems:
+            print(f"Validate with: python3 {ROOT / 'scripts/install-host.py'} --check")
+        else:
+            print("Installed wiring matches. Stop the apps, rebuild with saha build, then saha start --local and saha versions.")
+        return 1
+    print("Host wiring matches the repository. Runtime readiness and release migrations require separate checks.")
+    return 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("command", choices=["start", "stop", "restart", "online", "offline", "status", "routes", "doctor", "build", "diagnose", "versions"])
+    parser.add_argument("--local", action="store_true", help="Local startup or version checks (start/restart/versions)")
+    args = parser.parse_args()
+    if args.local and args.command not in ("start", "restart", "versions"):
+        parser.error("--local applies only to start/restart/versions")
+    if args.command == "routes":
+        routes()
+    elif args.command == "doctor":
+        return doctor()
+    elif args.command == "diagnose":
+        return diagnose()
+    elif args.command == "versions":
+        return versions(public=not args.local)
+    elif args.command == "build":
+        build()
+    elif args.command == "offline":
+        systemctl("stop", "cloudflared")
+        print("Cloudflare Tunnel stopped. Local app services were left running.")
+    elif args.command == "online":
+        online()
+    elif args.command == "stop":
+        if not Path("/etc/systemd/system/saha.service").is_file():
+            raise RuntimeError("Grouped saha service is not installed; existing services were not changed.")
+        systemctl("stop", "cloudflared", "saha", *APPS)
+        print("Saha apps and tunnel stopped. Shared nginx, databases and Docker infrastructure remain running.")
+    elif args.command in ("start", "restart"):
+        require_mapping()
+        # Shut the tunnel before starting/restarting any app; only restore it
+        # after nginx readiness succeeds. --local must actually unpublish it.
+        systemctl("stop", "cloudflared")
+        systemctl("restart" if args.command == "restart" else "start", "saha")
+        prefix = [] if os.geteuid() == 0 else ["sudo"]
+        subprocess.run(prefix + ["nginx", "-t"], check=True)
+        systemctl("reload", "nginx")
+        wait_ready()
+        if versions(public=False):
+            raise RuntimeError("Local processes do not serve the expected release. Run saha versions and inspect service logs.")
+        print("Saha is ready through local nginx.")
+        if not args.local:
+            online()
+    else:
+        for service in STACK["services"]:
+            result = subprocess.run(["systemctl", "is-active", service], capture_output=True, text=True)
+            print(f"{service:18} {(result.stdout.strip() or 'unavailable')}")
+        print(f"Local nginx readiness: {'ready' if ready() else 'not ready/unreachable'}")
+        public = http_probe(STACK['public_url'] + '/health/ready')
+        print(f"Public readiness: HTTP {public['status'] or 'unreachable'}; Saha ready: {public['ready']}")
+        if public.get("reason"):
+            print("  " + public["reason"] + "; run saha diagnose")
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+        print(f"saha: {exc}", file=sys.stderr)
+        raise SystemExit(1)

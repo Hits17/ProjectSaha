@@ -1,0 +1,11 @@
+{
+  "public_url": "https://sahasolutions.com",
+  "public_hosts": ["sahasolutions.com", "www.sahasolutions.com"],
+  "public_nginx_port": 80,
+  "admin_nginx_port": 8080,
+  "backend_port": 8000,
+  "frontend_port": 3000,
+  "admin_port": 3002,
+  "tunnel_config": "/etc/cloudflared/config.yml",
+  "services": ["saha", "saha-infra", "saha-backend", "saha-frontend", "saha-admin", "nginx", "cloudflared", "postgresql", "docker"]
+}

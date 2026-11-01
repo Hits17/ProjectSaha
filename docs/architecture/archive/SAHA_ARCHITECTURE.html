@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saha — Solutions Architecture Reference</title>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    securityLevel: 'loose',
+    themeVariables: {
+      primaryColor: '#0e2a47',
+      primaryTextColor: '#e8f1fb',
+      primaryBorderColor: '#2f6fb0',
+      lineColor: '#5a8fc0',
+      secondaryColor: '#14385c',
+      tertiaryColor: '#0a1c30',
+      attributeBackgroundColorOdd: '#102a45',
+      attributeBackgroundColorEven: '#0b2036',
+      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true, padding: 12 },
+    sequence: { showSequenceNumbers: true, actorMargin: 60, mirrorActors: false }
+  });
+  window.__mermaid = mermaid;
+</script>
+<style>
+  :root {
+    --navy:#08182b; --navy2:#0e2a47; --panel:#0f2236; --ink:#0b1623;
+    --cyan:#3fd0ff; --cyan-dim:#6fa8cc; --accent:#ffb454; --green:#5fd38d;
+    --red:#ff6b6b; --purple:#c08cff; --text:#dce8f2; --muted:#8aa6bd;
+    --border:#163a59; --border2:#21405f; --code:#0a1f33;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin:0; background:var(--navy); color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size:15px; line-height:1.65; display:flex;
+  }
+  a { color: var(--cyan); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  :not(pre) > code {
+    background:var(--code); color:#9fe0ff; padding:1px 6px; border-radius:5px;
+    font-size:.86em; border:1px solid #163a59;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width:300px; min-width:300px; height:100vh; position:sticky; top:0;
+    background:linear-gradient(180deg,#06121f,#0a1d31); border-right:1px solid var(--border2);
+    overflow-y:auto; padding:0 0 60px;
+  }
+  #sidebar .brand { padding:22px 22px 10px; border-bottom:1px solid var(--border2); position:sticky; top:0; background:#06121f; z-index:5; }
+  #sidebar .brand h1 { margin:0; font-size:20px; letter-spacing:.5px; color:#fff; }
+  #sidebar .brand .sub { color:var(--cyan-dim); font-size:12px; margin-top:3px; }
+  #toc { padding:14px 0; }
+  #toc a { display:block; color:var(--muted); padding:5px 22px 5px 22px; font-size:13.5px; border-left:3px solid transparent; }
+  #toc a:hover { color:var(--text); background:#0d2237; text-decoration:none; }
+  #toc a.section { color:#cfe3f5; font-weight:600; margin-top:12px; text-transform:uppercase; font-size:11.5px; letter-spacing:.8px; }
+  #toc a.active { color:var(--cyan); border-left-color:var(--cyan); background:#0d2237; }
+
+  /* Content */
+  main { flex:1; max-width:1180px; margin:0 auto; padding:30px 46px 140px; }
+  h2 { font-size:27px; color:#fff; margin:54px 0 6px; padding-top:18px; border-top:1px solid var(--border2); letter-spacing:.3px; }
+  h2:first-of-type { border-top:none; }
+  h3 { font-size:20px; color:var(--cyan); margin:34px 0 8px; }
+  h4 { font-size:16px; color:var(--accent); margin:22px 0 6px; letter-spacing:.3px; }
+  p { margin:10px 0; }
+  .lead { font-size:16.5px; color:#c3d6e7; }
+  hr { border:none; border-top:1px solid var(--border2); margin:30px 0; }
+  ul, ol { margin:10px 0; padding-left:22px; }
+  li { margin:5px 0; }
+
+  .tag { display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:20px; letter-spacing:.4px; vertical-align:middle; }
+  .tag.get{background:#10324a;color:#6fd0ff;border:1px solid #1d567f;}
+  .tag.post{background:#123a26;color:#74e29d;border:1px solid #1f6b41;}
+  .tag.ext{background:#3a1230;color:#ff9ad8;border:1px solid #6b1f56;}
+  .tag.int{background:#2a2440;color:#c3a6ff;border:1px solid #4a3d75;}
+
+  .card { background:var(--panel); border:1px solid var(--border2); border-radius:12px; padding:18px 22px; margin:18px 0; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  @media (max-width:980px){ .grid2,.grid3{grid-template-columns:1fr;} }
+
+  .callout { border-left:4px solid var(--cyan); background:#0c2034; padding:12px 18px; border-radius:0 10px 10px 0; margin:16px 0; }
+  .callout.warn { border-left-color:var(--accent); background:#241b0c; }
+  .callout.sec  { border-left-color:var(--green); background:#0c2417; }
+  .callout.danger{ border-left-color:var(--red); background:#241010; }
+  .callout b { color:#fff; }
+
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:13.5px; }
+  th,td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--border2); vertical-align:top; }
+  th { color:#bcd6ec; font-size:12px; text-transform:uppercase; letter-spacing:.5px; background:#0c2237; position:sticky; }
+  tr:hover td { background:#0c1f33; }
+  td.mono, th.mono { font-family:ui-monospace,Menlo,monospace; }
+
+  .diagram { background:#0a1c30; border:1px solid var(--border2); border-radius:12px; padding:20px; margin:18px 0; overflow-x:auto; }
+  .diagram .cap { color:var(--cyan-dim); font-size:12.5px; margin-bottom:8px; text-transform:uppercase; letter-spacing:.6px; }
+  pre.mermaid { background:transparent; margin:0; text-align:center; }
+
+  pre.code { background:var(--code); border:1px solid #163a59; border-radius:10px; padding:14px 16px; overflow-x:auto; font-size:13px; color:#cfe6f7; line-height:1.5; }
+  .pill { font-size:11px; background:#0c2237; border:1px solid #21405f; color:var(--cyan-dim); border-radius:6px; padding:2px 8px; margin-right:6px; }
+
+  details { background:var(--panel); border:1px solid var(--border2); border-radius:10px; margin:12px 0; overflow:hidden; }
+  details > summary { cursor:pointer; padding:12px 18px; font-weight:600; color:#cfe3f5; background:#0c2034; list-style:none; }
+  details > summary::-webkit-details-marker { display:none; }
+  details > summary::before { content:"▸ "; color:var(--cyan); }
+  details[open] > summary::before { content:"▾ "; }
+  details .body { padding:6px 18px 16px; }
+
+  .legend { display:flex; gap:18px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); margin:10px 0; }
+  .legend span::before { content:"●"; margin-right:5px; }
+  .l-client::before{color:#3fd0ff;} .l-api::before{color:#5fd38d;} .l-data::before{color:#ffb454;}
+  .l-ai::before{color:#c08cff;} .l-fin::before{color:#ff6b6b;} .l-obs::before{color:#8aa6bd;}
+
+  .kbd { background:#0c2237; border:1px solid #2a4c6e; border-bottom-width:2px; border-radius:5px; padding:1px 7px; font-size:12px; font-family:ui-monospace,monospace; color:#cfe6f7; }
+  .toolbar { position:fixed; bottom:18px; right:24px; display:flex; gap:8px; z-index:20; }
+  .toolbar button { background:var(--navy2); color:var(--text); border:1px solid var(--border2); border-radius:8px; padding:8px 12px; font-size:12.5px; cursor:pointer; }
+  .toolbar button:hover { border-color:var(--cyan); color:#fff; }
+  .footnote{color:var(--muted);font-size:12.5px;}
+
+  /* ---- Diagram zoom / pan lightbox ---- */
+  .diagram { position: relative; }
+  .zoom-btn {
+    position:absolute; top:10px; right:10px; z-index:4;
+    background:var(--navy2); color:var(--cyan-dim); border:1px solid var(--border2);
+    border-radius:8px; padding:5px 11px; font-size:12px; cursor:pointer;
+    opacity:0; transition:opacity .15s, border-color .15s, color .15s;
+  }
+  .diagram:hover .zoom-btn { opacity:1; }
+  .zoom-btn:hover { border-color:var(--cyan); color:#fff; }
+  @media (hover:none) { .zoom-btn { opacity:.9; } }
+  #zoom-overlay { position:fixed; inset:0; z-index:1000; display:none; background:rgba(4,11,20,.96); }
+  #zoom-overlay.open { display:block; }
+  #zoom-overlay .zoom-stage { position:absolute; inset:0; overflow:hidden; cursor:grab; touch-action:none; }
+  #zoom-overlay .zoom-stage:active { cursor:grabbing; }
+  #zoom-overlay .zoom-canvas { position:absolute; top:0; left:0; transform-origin:0 0; will-change:transform; }
+  #zoom-overlay .zoom-canvas svg { display:block; }
+  #zoom-overlay .zoom-controls { position:fixed; top:16px; right:18px; display:flex; gap:8px; z-index:1002; }
+  #zoom-overlay .zoom-controls button {
+    background:var(--navy2); color:var(--text); border:1px solid var(--border2);
+    border-radius:8px; min-width:40px; padding:8px 12px; font-size:15px; line-height:1; cursor:pointer;
+  }
+  #zoom-overlay .zoom-controls button:hover { border-color:var(--cyan); color:#fff; }
+  #zoom-overlay .zoom-title { position:fixed; top:22px; left:24px; right:230px; z-index:1002; color:var(--cyan-dim); font-size:13px; text-transform:uppercase; letter-spacing:.6px; }
+  #zoom-overlay .zoom-hint { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:1002;
+    color:var(--muted); font-size:12px; background:#0a1c30; border:1px solid var(--border2); border-radius:20px; padding:5px 14px; }
+
+  /* ---- Mermaid ER diagram — dark-theme readability (rows were white-on-white) ---- */
+  .diagram .entityBox { fill:#0e2a47 !important; }
+  .diagram .attributeBoxOdd { fill:#102a45 !important; }
+  .diagram .attributeBoxEven { fill:#0b2036 !important; }
+  .diagram .entityBox, .diagram .attributeBoxOdd, .diagram .attributeBoxEven { stroke:#2f6fb0 !important; }
+  .diagram .entityTitleText { fill:#e8f1fb !important; font-weight:600; }
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div class="brand">
+    <h1>Saha</h1>
+    <div class="sub">IP Transaction Operating System<br/>Solutions Architecture Reference · v1.0</div>
+  </div>
+  <div id="toc">
+    <a class="section">Foundations</a>
+    <a href="#overview">1 · System Overview</a>
+    <a href="#context">2 · Context (C4-L1)</a>
+    <a href="#containers">3 · Containers (C4-L2)</a>
+    <a href="#stack">4 · Technology Stack</a>
+    <a href="#topology">5 · Deployment & Ports</a>
+    <a class="section">Runtime Plumbing</a>
+    <a href="#request">6 · Request Lifecycle</a>
+    <a href="#auth">7 · Auth & Token Rotation</a>
+    <a href="#rbac">8 · RBAC & KYC Gating</a>
+    <a href="#ai">9 · AI Provider Routing</a>
+    <a href="#data">10 · Data Model (ERD)</a>
+    <a class="section">Domain Flows</a>
+    <a href="#f-listing">11 · Listing & BOM</a>
+    <a href="#f-vault">12 · Vault Encryption</a>
+    <a href="#f-search">13 · Discovery Search</a>
+    <a href="#f-proposal">14 · Proposal & PII Block</a>
+    <a href="#f-legal">15 · Legal & Contract</a>
+    <a href="#f-settle">16 · Settlement & Escrow</a>
+    <a href="#f-review">17 · Reviews & Reputation</a>
+    <a href="#f-demand">18 · Demand Intelligence</a>
+    <a href="#f-admin">19 · Admin Console</a>
+    <a href="#f-social">20 · Social Communities</a>
+    <a class="section">Cross-Cutting</a>
+    <a href="#observability">21 · Observability</a>
+    <a href="#integrations">22 · External Integrations</a>
+    <a href="#keys">23 · Key & Storage Conventions</a>
+    <a class="section">Reference</a>
+    <a href="#api">24 · Full API Catalogue</a>
+    <a href="#drawio">25 · draw.io Diagrams</a>
+  </div>
+</nav>
+
+<main>
+  <h2 id="overview" style="border-top:none;">1 · System Overview</h2>
+  <p class="lead">
+    <b>Saha</b> is a vertically-integrated <b>Transaction Operating System for Intellectual Property</b>.
+    It takes an IP holder (a <i>creator</i>) and a <i>manufacturer</i> from discovery all the way through to a
+    legally-signed, escrow-settled licensing deal — with AI assistance, encrypted document exchange, KYC identity
+    assurance, and platform-mediated payments at every step. This document maps <b>every container, every API call,
+    every integration, and every byte of plumbing</b> from the perspective of a solutions architect.
+  </p>
+
+  <div class="callout">
+    <b>Open-roles model (2026-06-10).</b> <code>creator</code>/<code>manufacturer</code> is a signup label, not a
+    capability boundary: every verified member can list IP <i>and</i> discover/bid on IP. Marketplace authorization is
+    ownership-based ("not your listing", "cannot propose on your own listing"); only <code>admin</code>/<code>legal</code>
+    remain privileged. The same release added the <b>raw-materials secondary marketplace</b>
+    (<code>/api/v1/materials</code>): members list materials they can supply regionally, so IP buyers can procure
+    production inputs locally and keep backup suppliers.
+  </div>
+
+  <div class="callout">
+    <b>Social layer (2026-06-18).</b> A <b>communities</b> feature (<code>/api/v1/communities</code>) adds the social
+    dimension: members create topic communities (themed to IP R&D domains — biotech, clean energy, materials science…)
+    and <b>group-chat</b> inside them to share ideas and advance research &amp; development. Reading public communities
+    needs only authentication; creating, joining and posting require verified KYC; reading a community's chat requires
+    membership. See <a href="#f-social">§20</a>.
+  </div>
+
+  <div class="grid3">
+    <div class="card"><h4 style="margin-top:0">The Spine</h4>A 9-stage funnel: <b>Identity → List → Discover → Negotiate → Legal → Settle → Review → Sense Demand → Govern.</b> Each stage is an isolated domain module sharing one async runtime.</div>
+    <div class="card"><h4 style="margin-top:0">Trust by Design</h4>AES-256-GCM at rest, JWT + refresh-family rotation, AI-mediated PII firewall, mandatory KYC gating, platform-held escrow. Parties never exchange contact details or funds directly.</div>
+    <div class="card"><h4 style="margin-top:0">Edge-Native</h4>Runs on a single <b>NVIDIA Jetson Orin Nano (ARM64)</b>. Native PostgreSQL + Dockerised stateful services. Heavy AI is offloaded to cloud inference (NVIDIA NIM / Anthropic).</div>
+  </div>
+
+  <div class="callout">
+    <b>How to read this document.</b> Diagrams render live (Mermaid, via CDN — needs internet once).
+    <span class="pill">▢ Sequence = request flow</span>
+    <span class="pill">▢ Participants = swim-lanes</span>
+    <span class="pill">▢ State = lifecycle machine</span>
+    <span class="pill">▢ ERD = data model</span>.
+    Icon-rich architecture posters are exported as <code>.drawio</code> files — see <a href="#drawio">§24</a>.
+  </div>
+
+  <div class="legend">
+    <span class="l-client">Client tier</span>
+    <span class="l-api">Application tier</span>
+    <span class="l-data">Data tier</span>
+    <span class="l-ai">AI / inference</span>
+    <span class="l-fin">Fintech / identity</span>
+    <span class="l-obs">Observability</span>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="context">2 · System Context — C4 Level 1</h2>
+  <p>Who talks to Saha, and which external systems Saha depends on. Four human roles, one system boundary, seven external services.</p>
+  <div class="diagram">
+    <div class="cap">Context diagram — actors & external dependencies</div>
+<pre class="mermaid">
+flowchart TB
+  creator(["👤 Creator<br/>(IP Holder)"]):::person
+  maker(["👤 Manufacturer<br/>(Buyer)"]):::person
+  legal(["👤 Legal Partner"]):::person
+  admin(["👤 Platform Admin"]):::person
+
+  subgraph SAHA["🏛️  SAHA — IP Transaction OS"]
+    sys["Next.js Web App + FastAPI Core<br/>AI · Vault · Escrow · Discovery"]
+  end
+
+  nvidia["☁️ NVIDIA NIM<br/>LLM + Embeddings"]:::ai
+  anthropic["☁️ Anthropic Claude<br/>Legal reasoning"]:::ai
+  stripe["☁️ Stripe<br/>Escrow & transfers"]:::fin
+  persona["☁️ Persona<br/>KYC / identity"]:::fin
+  smtp["✉️ SMTP / SendGrid<br/>Notifications"]:::ext
+
+  creator --> SAHA
+  maker --> SAHA
+  legal --> SAHA
+  admin --> SAHA
+
+  SAHA -->|intent parse, BOM, PII scan| nvidia
+  SAHA -->|contract drafting| anthropic
+  SAHA -->|payment intents, transfers| stripe
+  SAHA -->|identity verification| persona
+  SAHA -->|emails| smtp
+
+  classDef person fill:#0e2a47,stroke:#3fd0ff,color:#e8f1fb;
+  classDef ai fill:#241a3a,stroke:#c08cff,color:#e9defb;
+  classDef fin fill:#2a1218,stroke:#ff6b6b,color:#ffd9d9;
+  classDef ext fill:#10324a,stroke:#6fd0ff,color:#dcf;
+</pre>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="containers">3 · Container Architecture — C4 Level 2</h2>
+  <p>The deployable units and how data moves between them. The backend is a single FastAPI process organised in strict layers:
+     <b>Routers → Services → Integrations → Datastores</b>. Routers never touch a datastore directly; services never build HTTP responses.</p>
+  <div class="diagram">
+    <div class="cap">Container diagram — every box is a process or a managed store</div>
+<pre class="mermaid">
+flowchart TB
+  subgraph CLIENT["🖥️ Client Tier"]
+    web["Marketplace — Next.js 15<br/>:3000 · Zustand · TanStack Query<br/>RHF + Zod"]:::client
+    adminapp["Admin Console — Next.js 15<br/>:3002 · admin-only login<br/>users · moderation · disputes · revenue"]:::client
+  end
+
+  subgraph APP["⚙️ Application Tier — FastAPI :8000 (uvicorn, async)"]
+    direction TB
+    mw["Middleware: request-ID + security headers · CORS ·<br/>gzip · SlowAPI rate-limit (Redis) · JWT bearer"]:::api
+    routers["Routers: auth · users · listings · materials · communities · search · proposals ·<br/>transactions · settlement · reviews · demand · admin · webhooks"]:::api
+    services["Services: auth · listings · materials · communities · search · embeddings · proposals ·<br/>messages · transactions · settlement · reviews · demand · vault · admin"]:::api
+    integ["Integrations: storage · vector · stripe · kyc · email · ai.client"]:::api
+    mw --> routers --> services --> integ
+  end
+
+  subgraph DATA["🗄️ Data Tier"]
+    pg[("PostgreSQL :5432<br/>native · 20 tables")]:::data
+    redis[("Redis :6379<br/>AI session state")]:::data
+    minio[("MinIO :9000<br/>encrypted vault")]:::data
+    qdrant[("Qdrant :6333<br/>1024-d vectors")]:::data
+  end
+
+  subgraph EXT["☁️ External Services"]
+    nvidia["NVIDIA NIM"]:::ai
+    anthropic["Anthropic"]:::ai
+    stripe["Stripe"]:::fin
+    persona["Persona"]:::fin
+    smtp["SMTP/MailHog :1025"]:::ext
+  end
+
+  subgraph OBS["📊 Observability"]
+    prom["Prometheus :9091"]:::obs
+    graf["Grafana :3001"]:::obs
+    loki["Loki :3100"]:::obs
+  end
+
+  web -->|"HTTPS/JSON · Bearer JWT"| mw
+  adminapp -->|"HTTPS/JSON · Bearer JWT (role=admin)"| mw
+  services --> pg
+  services --> redis
+  integ --> minio
+  integ --> qdrant
+  integ -->|chat + embeddings| nvidia
+  integ -->|contracts| anthropic
+  integ -->|escrow| stripe
+  integ -->|KYC| persona
+  integ -->|mail| smtp
+  prom -->|scrape /metrics/| APP
+  graf --> prom
+  graf --> loki
+
+  classDef client fill:#0c2740,stroke:#3fd0ff,color:#e8f1fb;
+  classDef api fill:#0c2a1c,stroke:#5fd38d,color:#dffce9;
+  classDef data fill:#2a1f0c,stroke:#ffb454,color:#ffeccb;
+  classDef ai fill:#241a3a,stroke:#c08cff,color:#e9defb;
+  classDef fin fill:#2a1218,stroke:#ff6b6b,color:#ffd9d9;
+  classDef ext fill:#10324a,stroke:#6fd0ff,color:#dcf;
+  classDef obs fill:#1a2430,stroke:#8aa6bd,color:#d3e0ec;
+</pre>
+  </div>
+
+  <div class="callout sec"><b>Architectural invariant.</b> The layering is enforced by import direction: <code>api/*</code> imports <code>services/*</code>; <code>services/*</code> imports <code>integrations/*</code> and <code>db/models/*</code>; nothing imports upward. The only HTTP-response objects live in <code>api/*</code>; the only SQL lives in <code>services/*</code> and <code>db/*</code>.</div>
+
+  <!-- ============================================================ -->
+  <h2 id="stack">4 · Technology Stack</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0">Backend</h4>
+      <table>
+        <tr><td>Runtime</td><td class="mono">Python 3.12 · uvicorn (async)</td></tr>
+        <tr><td>Framework</td><td class="mono">FastAPI</td></tr>
+        <tr><td>ORM</td><td class="mono">SQLAlchemy 2.0 async + asyncpg</td></tr>
+        <tr><td>Driver pool</td><td class="mono">pool_size 10 · max_overflow 20 · pre_ping</td></tr>
+        <tr><td>Auth</td><td class="mono">python-jose (JWT HS256) · bcrypt(12)</td></tr>
+        <tr><td>Crypto</td><td class="mono">cryptography AESGCM (256-bit)</td></tr>
+        <tr><td>Pkg mgr</td><td class="mono">uv</td></tr>
+        <tr><td>Rate limit</td><td class="mono">SlowAPI · Redis-backed · per-user (JWT) else per-IP</td></tr>
+        <tr><td>Logging</td><td class="mono">structlog (JSON)</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">Frontend</h4>
+      <table>
+        <tr><td>Framework</td><td class="mono">Next.js 15 (App Router)</td></tr>
+        <tr><td>State</td><td class="mono">Zustand (auth) · TanStack Query</td></tr>
+        <tr><td>Forms</td><td class="mono">React Hook Form + Zod v4</td></tr>
+        <tr><td>Styling</td><td class="mono">Tailwind CSS</td></tr>
+        <tr><td>Pkg mgr</td><td class="mono">pnpm 9.15.4 (Node 20)</td></tr>
+        <tr><td>API client</td><td class="mono">lib/api.ts · fetch + 401 auto-refresh</td></tr>
+      </table>
+      <h4>Infra & Data</h4>
+      <table>
+        <tr><td>RDBMS</td><td class="mono">PostgreSQL (native, host)</td></tr>
+        <tr><td>Cache/session</td><td class="mono">Redis 7</td></tr>
+        <tr><td>Object store</td><td class="mono">MinIO (S3-compat, boto3/aioboto3)</td></tr>
+        <tr><td>Vector DB</td><td class="mono">Qdrant 1.18 (cosine, 1024-d)</td></tr>
+        <tr><td>Metrics</td><td class="mono">Prometheus · Grafana · Loki</td></tr>
+        <tr><td>Host</td><td class="mono">Jetson Orin Nano · ARM64 · Linux 5.15</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="topology">5 · Deployment & Port Map</h2>
+  <p>One physical host. PostgreSQL runs <b>natively</b> (not containerised) on the host; all other stateful services run in Docker Compose. The backend and frontend run as host processes during development.</p>
+  <table>
+    <thead><tr><th>Service</th><th>Host Port</th><th>Container Port</th><th class="mono">Where</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Frontend (Next.js)</td><td class="mono">3000</td><td>—</td><td>host process</td><td>Web UI</td></tr>
+      <tr><td>Admin Console (Next.js)</td><td class="mono">3002</td><td>—</td><td>host process</td><td>Admin UI (role=admin only)</td></tr>
+      <tr><td>Backend (FastAPI)</td><td class="mono">8000</td><td>—</td><td>host process</td><td>API + <code>/metrics/</code></td></tr>
+      <tr><td>PostgreSQL</td><td class="mono">5432</td><td>—</td><td>native host</td><td>System of record (16 tables)</td></tr>
+      <tr><td>Redis</td><td class="mono">6379</td><td>6379</td><td>docker</td><td>AI dialogue session state (24h TTL)</td></tr>
+      <tr><td>MinIO API</td><td class="mono">9000</td><td>9000</td><td>docker</td><td>Encrypted vault objects</td></tr>
+      <tr><td>MinIO Console</td><td class="mono">9001</td><td>9001</td><td>docker</td><td>Admin UI</td></tr>
+      <tr><td>Qdrant REST</td><td class="mono">6333</td><td>6333</td><td>docker</td><td>Vector search</td></tr>
+      <tr><td>Qdrant gRPC</td><td class="mono">6334</td><td>6334</td><td>docker</td><td>Vector search (gRPC)</td></tr>
+      <tr><td>MailHog/Mailpit SMTP</td><td class="mono">1025</td><td>1025</td><td>docker</td><td>Dev mail sink</td></tr>
+      <tr><td>MailHog/Mailpit UI</td><td class="mono">8025</td><td>8025</td><td>docker</td><td>Inbox viewer</td></tr>
+      <tr><td>Prometheus</td><td class="mono">9091</td><td>9090</td><td>docker</td><td>Metrics scrape (remapped to avoid host 9090 clash)</td></tr>
+      <tr><td>Loki</td><td class="mono">3100</td><td>3100</td><td>docker</td><td>Log aggregation</td></tr>
+      <tr><td>Grafana</td><td class="mono">3001</td><td>3000</td><td>docker</td><td>Dashboards</td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn"><b>Why native Postgres?</b> The schema is pre-applied via <code>saha-dev-infra/init-scripts/01-schema.sql</code> — all 16 tables and every PostgreSQL <code>ENUM</code> type exist before the app boots. The app therefore runs <b>zero migrations</b>; every SQLAlchemy enum uses <code>create_type=False</code>. Tables are owned by <code>postgres</code>; the <code>saha</code> role is granted via <code>grant-saha-permissions.sql</code>.</div>
+
+  <!-- ============================================================ -->
+  <h2 id="request">6 · Request Lifecycle & Middleware Pipeline</h2>
+  <p>Every inbound HTTP request passes through the same pipeline before it reaches a route handler, and a deterministic teardown after. Understanding this pipeline explains auth, CORS, rate-limiting, the DB-session boundary, and audit logging in one picture. An outer middleware assigns/propagates <code>X-Request-ID</code>, emits one structured access-log line per request (structlog), converts unhandled exceptions into a generic 500 with the request id, and stamps security headers (<code>nosniff</code>, <code>X-Frame-Options: DENY</code>, referrer-policy, HSTS in production) on every response.</p>
+  <div class="diagram">
+    <div class="cap">Flowchart — a request from browser to datastore and back</div>
+<pre class="mermaid">
+flowchart LR
+  A["Browser fetch()<br/>Authorization: Bearer JWT"] --> B{CORS<br/>origin allowed?}
+  B -- no --> Bx["403 CORS"]:::err
+  B -- yes --> C{SlowAPI<br/>rate limit OK?}
+  C -- no --> Cx["429 Too Many Requests"]:::err
+  C -- yes --> D["Route match<br/>FastAPI dependency graph"]
+  D --> E["Depends: get_db()<br/>opens AsyncSession"]
+  E --> F{"Depends: get_current_user<br/>decode JWT (HS256)"}
+  F -- invalid --> Fx["401 Invalid/expired token"]:::err
+  F -- valid --> G{"require_verified_user?<br/>kyc_status == verified"}
+  G -- no --> Gx["403 KYC required"]:::err
+  G -- yes --> H["Route handler<br/>calls service layer"]
+  H --> I["Service: SQLAlchemy async<br/>+ integrations"]
+  I --> J[("Datastore(s)")]:::data
+  J --> I --> H
+  H --> K["BackgroundTasks:<br/>write_audit_log()"]
+  K --> L["Pydantic response_model<br/>serialise → JSON"]
+  L --> M["get_db finally:<br/>session.close()"]
+  M --> N["200/201 JSON"]:::ok
+
+  classDef err fill:#2a1212,stroke:#ff6b6b,color:#ffd9d9;
+  classDef ok fill:#0c2a1c,stroke:#5fd38d,color:#dffce9;
+  classDef data fill:#2a1f0c,stroke:#ffb454,color:#ffeccb;
+</pre>
+  </div>
+  <div class="grid2">
+    <div class="card"><h4 style="margin-top:0">DB-session boundary</h4>The <code>get_db()</code> dependency yields one <code>AsyncSession</code> per request, rolls back on any exception, and always closes in <code>finally</code>. <code>expire_on_commit=False</code> keeps objects usable after commit — hence the <code>populate_existing=True</code> pattern when re-reading mutated rows with fresh relationships.</div>
+    <div class="card"><h4 style="margin-top:0">Audit as background work</h4>Mutating endpoints append to <code>audit_logs</code> via <code>BackgroundTasks</code> after the response is computed, so logging never blocks or fails the user's request. Actions: <code>transaction.contract_signed</code>, <code>settlement.disbursed</code>, <code>review.created</code>, etc.</div>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="auth">7 · Authentication & Refresh-Token Rotation</h2>
+  <p>Saha uses short-lived <b>access JWTs</b> (HS256) paired with long-lived, single-use <b>refresh tokens</b> organised into <b>families</b>. Only a SHA-256 hash of each refresh token is ever stored. Reuse of an already-rotated token is treated as theft and nukes the entire family.</p>
+
+  <h3>7.1 Registration & Login</h3>
+  <div class="diagram">
+    <div class="cap">Swim-lane sequence — register → login → authenticated call</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant U as Browser
+  participant FE as Next.js
+  participant API as FastAPI /auth
+  participant SVC as auth service
+  participant DB as PostgreSQL
+
+  U->>FE: submit register form (email, pw, role)
+  FE->>API: POST /api/v1/auth/register
+  API->>SVC: register_user()
+  SVC->>SVC: bcrypt.hashpw(pw, gensalt(12))
+  SVC->>DB: INSERT users (hashed_password, role)
+  DB-->>SVC: user row
+  SVC-->>API: User
+  API-->>FE: 201 User
+
+  U->>FE: submit login
+  FE->>API: POST /api/v1/auth/login
+  API->>SVC: login_user()
+  SVC->>DB: SELECT user WHERE email
+  SVC->>SVC: verify_password (bcrypt.checkpw)
+  SVC->>SVC: create_access_token(sub,role,exp)
+  SVC->>SVC: create_refresh_token_pair() → (raw, sha256)
+  SVC->>DB: INSERT refresh_tokens (token_hash, family_id, expires_at)
+  SVC-->>FE: {access_token, refresh_token}
+  FE->>FE: Zustand store.setTokens()
+  FE->>API: GET /api/v1/users/me (Bearer access)
+  API-->>FE: 200 User profile
+</pre>
+  </div>
+
+  <h3>7.2 Rotation & Theft Detection</h3>
+  <p>When the access token expires, <code>lib/api.ts</code> transparently calls <code>/auth/refresh</code> on a <span class="kbd">401</span> and retries the original request once. The server rotates the refresh token within the same <code>family_id</code> and marks the old one <code>used_at</code>. If a token that already has <code>used_at</code> is presented again, the whole family is deleted.</p>
+  <div class="diagram">
+    <div class="cap">Sequence — silent refresh + reuse-detection security tripwire</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant FE as lib/api.ts
+  participant API as FastAPI /auth
+  participant SVC as auth service
+  participant DB as refresh_tokens
+
+  FE->>API: GET /protected (expired access)
+  API-->>FE: 401
+  FE->>API: POST /auth/refresh {raw_refresh}
+  API->>SVC: refresh_access_token()
+  SVC->>DB: SELECT WHERE token_hash = sha256(raw) AND not expired
+  alt token not found
+    SVC-->>FE: 401 invalid/expired
+  else token.used_at IS NOT NULL  (REUSE!)
+    SVC->>DB: DELETE all WHERE family_id = token.family_id
+    SVC-->>FE: 401 "Token reuse detected — log in again"
+  else valid & unused
+    SVC->>DB: UPDATE used_at = now()
+    SVC->>SVC: new access + new refresh (same family_id)
+    SVC->>DB: INSERT rotated refresh_token
+    SVC-->>FE: {access_token, refresh_token}
+    FE->>API: retry /protected (new access)
+    API-->>FE: 200
+  end
+</pre>
+  </div>
+  <div class="callout sec"><b>Why hashes + families?</b> A DB compromise yields only SHA-256 hashes — useless for replay. Rotation makes every refresh single-use; the family mechanism converts a stolen-token replay into an automatic, self-healing logout of the attacker <i>and</i> the victim, prompting re-authentication.</div>
+
+  <!-- ============================================================ -->
+  <h2 id="rbac">8 · Authorization — RBAC & KYC Gating</h2>
+  <p>Three FastAPI dependencies form a ladder of trust. Public endpoints use the optional variant; transactional endpoints demand verified identity; the admin console demands the admin role.</p>
+  <div class="grid3">
+    <div class="card"><h4 style="margin-top:0"><code>get_optional_user</code></h4><span class="tag get">auto_error=False</span> Returns <code>User | None</code>. Used by public listing reads so anonymous browsing works but personalised data appears when logged in.</div>
+    <div class="card"><h4 style="margin-top:0"><code>require_verified_user</code></h4>403 unless <code>kyc_status == VERIFIED</code>. Guards listing creation, materials, proposals, transactions, settlement, reviews, and community writes (create/join/post) — anything that creates legal, financial, or social obligation.</div>
+    <div class="card"><h4 style="margin-top:0"><code>require_admin</code></h4>403 unless <code>role == ADMIN</code>. Guards the entire <code>/api/v1/admin/*</code> surface.</div>
+  </div>
+  <div class="diagram">
+    <div class="cap">Decision flow — which dependency gates which surface</div>
+<pre class="mermaid">
+flowchart TD
+  R["Inbound request"] --> T{Bearer token present?}
+  T -- no --> O1["get_optional_user → None<br/>✓ public reads · ✗ everything else"]:::n
+  T -- yes --> DEC["decode_access_token()<br/>verify HS256 + type=access"]
+  DEC -- bad --> E401["401"]:::err
+  DEC -- ok --> LU["load User by sub; is_active?"]
+  LU -- inactive --> E401
+  LU -- active --> ROLE{endpoint class}
+  ROLE -->|public| OK1["serve"]:::ok
+  ROLE -->|transactional| KYC{kyc_status == verified?}
+  KYC -- no --> E403K["403 KYC required"]:::err
+  KYC -- yes --> OK2["serve"]:::ok
+  ROLE -->|admin| ADM{role == admin?}
+  ADM -- no --> E403A["403 admin required"]:::err
+  ADM -- yes --> OK3["serve"]:::ok
+  classDef err fill:#2a1212,stroke:#ff6b6b,color:#ffd9d9;
+  classDef ok fill:#0c2a1c,stroke:#5fd38d,color:#dffce9;
+  classDef n fill:#1a2430,stroke:#8aa6bd,color:#d3e0ec;
+</pre>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="ai">9 · AI Provider-Routing Subsystem</h2>
+  <p>Every AI call in the codebase goes through one object: <code>llm.complete(messages, function_name=…)</code>. The <b>function name</b> — not the call site — decides the provider. This decouples business logic from model choice and lets cost-sensitive tasks use NVIDIA while legal reasoning is pinned to Anthropic.</p>
+  <div class="diagram">
+    <div class="cap">Resolution flow — function_name → provider</div>
+<pre class="mermaid">
+flowchart TD
+  C["service calls llm.complete(<br/>function_name='…')"] --> P0{explicit provider<br/>arg passed?}
+  P0 -- yes --> USE["use it"]:::ok
+  P0 -- no --> A{function ∈ ALWAYS_ANTHROPIC<br/>AND key configured?}
+  A -- yes --> ANT["Anthropic"]:::ai
+  A -- no --> G{global LLM_PROVIDER}
+  G -- anthropic --> ANT
+  G -- nvidia/ollama --> FIX["that provider"]:::ai
+  G -- auto --> MAP["FUNCTION_PROVIDER_MAP[function]"]:::ai
+  USE --> DISP
+  ANT --> DISP
+  FIX --> DISP
+  MAP --> DISP
+  DISP["dispatch → providers/{anthropic|nvidia|ollama}.complete()"] --> RESP["LLMResponse{content, provider, model, tokens}"]:::ok
+  classDef ai fill:#241a3a,stroke:#c08cff,color:#e9defb;
+  classDef ok fill:#0c2a1c,stroke:#5fd38d,color:#dffce9;
+</pre>
+  </div>
+  <h3>9.1 Function → Provider Map</h3>
+  <table>
+    <thead><tr><th class="mono">function_name</th><th>Default provider</th><th>Used by</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">legal_concept_assistant</td><td><span class="tag int">Anthropic (pinned)</span></td><td>contract drafting</td><td>Legal nuance — never downgraded</td></tr>
+      <tr><td class="mono">contract_review</td><td><span class="tag int">Anthropic (pinned)</span></td><td>contract review</td><td>Legal nuance</td></tr>
+      <tr><td class="mono">discovery_intent_parse</td><td>NVIDIA</td><td>search service</td><td>Fast, cheap, structured JSON</td></tr>
+      <tr><td class="mono">bom_creator_dialogue</td><td>NVIDIA</td><td>listing BOM chat</td><td>Multi-turn, latency-tolerant</td></tr>
+      <tr><td class="mono">contact_detection_classifier</td><td>NVIDIA</td><td>message PII firewall</td><td>Tiny binary classification</td></tr>
+      <tr><td class="mono">demand_signal_synthesis</td><td>NVIDIA</td><td>demand analytics</td><td>Batch aggregation</td></tr>
+    </tbody>
+  </table>
+  <h3>9.2 Embeddings path (separate from chat)</h3>
+  <p>Semantic vectors are produced by <code>services/embeddings.py</code> calling NVIDIA <code>nv-embedqa-e5-v5</code> (<b>1024 dims</b>) directly over HTTPS — not through the chat client. The <code>input_type</code> parameter is critical: <code>"passage"</code> when indexing a listing, <code>"query"</code> when embedding a search query. Mismatching them silently degrades recall.</p>
+
+  <!-- ============================================================ -->
+  <h2 id="data">10 · Data Model — Entity Relationship Diagram</h2>
+  <p>20 tables in one PostgreSQL database. The IP funnel reads left-to-right: a <code>user</code> owns <code>ip_listings</code>; each listing has <code>bom_items</code> + encrypted <code>ip_vault_assets</code>; a <code>proposal</code> joins buyer↔listing and carries <code>proposal_versions</code> + encrypted <code>messages</code>; an accepted proposal spawns a <code>transaction</code>, which yields a <code>disbursement</code> and post-close <code>reviews</code>. <code>raw_material_listings</code> is the secondary marketplace (seller→materials). The social layer adds <code>communities</code> with their <code>community_memberships</code> join and <code>community_messages</code> (plaintext group chat). <code>demand_signals</code> and <code>audit_logs</code> are cross-cutting ledgers.</p>
+  <div class="diagram">
+    <div class="cap">ERD — core entities & cardinalities</div>
+<pre class="mermaid">
+erDiagram
+  users ||--o{ ip_listings : creates
+  users ||--o{ refresh_tokens : owns
+  users ||--o{ enterprise_members : "belongs to"
+  enterprises ||--o{ enterprise_members : has
+  ip_listings ||--o{ bom_items : "bill of materials"
+  ip_listings ||--o{ ip_vault_assets : "encrypted files"
+  ip_listings ||--o{ proposals : "is target of"
+  users ||--o{ proposals : "buyer submits"
+  proposals ||--o{ proposal_versions : "negotiation history"
+  proposals ||--o{ messages : "encrypted thread"
+  proposals ||--|| transactions : "accept spawns"
+  ip_listings ||--o{ transactions : "licenses"
+  law_firm_partners ||--o{ transactions : "assigned to"
+  transactions ||--o{ disbursements : "settles via"
+  transactions ||--o{ reviews : "rated in"
+  users ||--o{ reviews : "writes/receives"
+  users ||--o{ demand_signals : "search logs"
+  users ||--o{ audit_logs : "acts in"
+  users ||--o{ raw_material_listings : "supplies"
+  users ||--o{ communities : "founds"
+  communities ||--o{ community_memberships : "has members"
+  users ||--o{ community_memberships : "joins"
+  communities ||--o{ community_messages : "group chat"
+  users ||--o{ community_messages : "posts"
+
+  users {
+    uuid id PK
+    string email UK
+    string hashed_password
+    enum role "creator|manufacturer|legal|admin"
+    enum kyc_status "pending|in_review|verified|rejected"
+    bool is_active
+  }
+  ip_listings {
+    uuid id PK
+    uuid creator_id FK
+    enum status "draft|ai_generating|review|published|archived"
+    int view_count
+  }
+  ip_vault_assets {
+    uuid id PK
+    uuid listing_id FK
+    string storage_key "vault/{lid}/{aid}/file.enc"
+    string encryption_key_id "v1"
+    int file_size_bytes
+  }
+  proposals {
+    uuid id PK
+    uuid listing_id FK
+    uuid buyer_id FK
+    uuid seller_id FK
+    enum status "draft..accepted|rejected|withdrawn"
+    numeric offer_amount_usd
+  }
+  messages {
+    uuid id PK
+    uuid proposal_id FK
+    bytea encrypted_content "AES-256-GCM"
+    bool is_blocked
+    string block_reason
+  }
+  transactions {
+    uuid id PK
+    uuid proposal_id FK
+    enum status "pending_legal..completed"
+    numeric deal_value_usd
+    numeric saha_commission_usd
+    string stripe_payment_intent_id
+    timestamptz escrow_funded_at
+    timestamptz disbursed_at
+  }
+  disbursements {
+    uuid id PK
+    uuid transaction_id FK
+    numeric ip_holder_amount_usd
+    json stripe_transfer_ids
+  }
+  reviews {
+    uuid id PK
+    uuid transaction_id FK
+    uuid reviewer_id FK
+    uuid reviewee_id FK
+    int rating "1..5"
+  }
+  demand_signals {
+    uuid id PK
+    text query_text
+    jsonb parsed_intent
+    int result_count
+  }
+  communities {
+    uuid id PK
+    uuid created_by FK
+    string name
+    string slug UK
+    enum topic "biotech|clean_energy|materials_science|…"
+    enum visibility "public|private"
+  }
+  community_memberships {
+    uuid id PK
+    uuid community_id FK
+    uuid user_id FK
+    enum role "owner|moderator|member"
+  }
+  community_messages {
+    uuid id PK
+    uuid community_id FK
+    uuid sender_id FK
+    text content "plaintext group chat"
+  }
+</pre>
+  </div>
+  <details>
+    <summary>Full table inventory (20) & ownership notes</summary>
+    <div class="body">
+      <table>
+        <thead><tr><th>Table</th><th>Module</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">users</td><td>identity</td><td>role + kyc_status enums</td></tr>
+          <tr><td class="mono">enterprises</td><td>identity</td><td>org/KYB — present, not yet wired</td></tr>
+          <tr><td class="mono">enterprise_members</td><td>identity</td><td>join (enterprise,user)</td></tr>
+          <tr><td class="mono">refresh_tokens</td><td>auth</td><td>hash + family_id + used_at</td></tr>
+          <tr><td class="mono">audit_logs</td><td>cross-cut</td><td>column <code>metadata</code> mapped as <code>log_metadata</code> (JSONB)</td></tr>
+          <tr><td class="mono">ip_listings</td><td>listings</td><td>status state machine</td></tr>
+          <tr><td class="mono">bom_items</td><td>listings</td><td>materials, criticality, cadence</td></tr>
+          <tr><td class="mono">ip_vault_assets</td><td>vault</td><td>storage_key points to MinIO <code>.enc</code></td></tr>
+          <tr><td class="mono">demand_signals</td><td>discovery</td><td>written on every search</td></tr>
+          <tr><td class="mono">proposals</td><td>deal</td><td>buyer↔seller↔listing</td></tr>
+          <tr><td class="mono">proposal_versions</td><td>deal</td><td>each offer/counter</td></tr>
+          <tr><td class="mono">messages</td><td>deal</td><td>BYTEA encrypted + PII flag</td></tr>
+          <tr><td class="mono">law_firm_partners</td><td>legal</td><td>seeded directory</td></tr>
+          <tr><td class="mono">transactions</td><td>legal/settle</td><td>11-state machine</td></tr>
+          <tr><td class="mono">disbursements</td><td>settle</td><td>fee split ledger</td></tr>
+          <tr><td class="mono">reviews</td><td>reputation</td><td>1 per (txn,reviewer)</td></tr>
+          <tr><td class="mono">raw_material_listings</td><td>materials</td><td>secondary marketplace; region/category indexed</td></tr>
+          <tr><td class="mono">communities</td><td>social</td><td>topic group; unique slug; public/private</td></tr>
+          <tr><td class="mono">community_memberships</td><td>social</td><td>join (community,user); UNIQUE; owner/moderator/member</td></tr>
+          <tr><td class="mono">community_messages</td><td>social</td><td>plaintext group chat; (community,created_at) indexed; ON DELETE CASCADE</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <h2 id="f-listing">11 · Domain Flow — Listing Creation & AI BOM Dialogue</h2>
+  <p>A creator turns raw know-how into a structured, publishable listing through a multi-turn AI conversation whose state lives in <b>Redis</b> (not Postgres) until finalised. Finalising parses the dialogue into structured <code>bom_items</code>; publishing embeds the listing into <b>Qdrant</b>.</p>
+  <div class="diagram">
+    <div class="cap">Swim-lane — create → converse (Redis) → finalize BOM (Postgres) → publish (Qdrant)</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant FE as Next.js
+  participant API as /listings
+  participant SVC as listings svc
+  participant AI as llm (NVIDIA)
+  participant R as Redis
+  participant PG as PostgreSQL
+  participant EMB as embeddings (NVIDIA)
+  participant Q as Qdrant
+
+  FE->>API: POST /listings {title,category}
+  API->>SVC: create_listing()
+  SVC->>PG: INSERT ip_listings (status=draft)
+  API-->>FE: 201 listing
+
+  FE->>API: POST /listings/{id}/dialogue/start
+  API->>SVC: start dialogue
+  SVC->>AI: complete(bom_creator_dialogue, greeting)
+  SVC->>R: SETEX bom:session:{lid}:{uid} (24h)
+  API-->>FE: assistant greeting
+
+  loop multi-turn
+    FE->>API: POST /listings/{id}/dialogue {message}
+    API->>R: load history
+    API->>AI: complete(history + message)
+    API->>R: append user+assistant turns
+    API-->>FE: assistant reply
+  end
+
+  FE->>API: POST /listings/{id}/finalize-bom
+  API->>R: read full transcript
+  API->>AI: complete(FINALIZE_PROMPT) → JSON BOM
+  API->>PG: INSERT bom_items[] · status=review
+  API-->>FE: structured BOM + listing
+
+  FE->>API: POST /listings/{id}/publish {public_description}
+  API->>SVC: publish_listing()
+  SVC->>EMB: embed_text(title+desc, "passage")
+  EMB-->>SVC: 1024-d vector
+  SVC->>Q: upsert point(payload: listing_id, tags…)
+  SVC->>PG: status=published
+  SVC->>SVC: metrics.listings_published_total.inc()
+  API-->>FE: 200 published
+</pre>
+  </div>
+  <h4>Listing status machine</h4>
+  <div class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> draft: create_listing
+  draft --> ai_generating: dialogue in progress
+  ai_generating --> review: finalize-bom (bom_items written)
+  draft --> review: finalize-bom
+  review --> published: publish (→ Qdrant index)
+  published --> archived: archive
+  archived --> [*]
+</pre>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="f-vault">12 · Domain Flow — Vault Encryption at Rest</h2>
+  <p>Confidential files (the actual IP) never hit disk in plaintext. On upload they are sealed with <b>AES-256-GCM</b>; the ciphertext layout is <code>nonce(12 bytes) ‖ GCM&nbsp;ciphertext+tag</code>, stored as one MinIO object. The 256-bit key is derived as <code>SHA-256(VAULT_ENCRYPTION_KEY)</code>.</p>
+  <div class="diagram">
+    <div class="cap">Sequence — encrypt-on-upload, presign / decrypt-on-authorized-read</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant FE as Next.js
+  participant API as /listings/{id}/files
+  participant V as vault svc
+  participant S3 as MinIO
+  participant PG as PostgreSQL
+
+  FE->>API: POST file (multipart)
+  API->>V: store_encrypted_file(listing_id, name, bytes)
+  V->>V: key = SHA256(VAULT_ENCRYPTION_KEY)
+  V->>V: nonce = os.urandom(12)
+  V->>V: blob = nonce ‖ AESGCM(key).encrypt(nonce, data)
+  V->>S3: put_object(vault/{lid}/{aid}/name.enc, blob)
+  V->>PG: INSERT ip_vault_assets(storage_key, key_id=v1, size)
+  API-->>FE: 201 asset metadata
+
+  Note over FE,S3: Authorized read (post escrow-funded — see §16)
+  FE->>API: GET …/vault-access (list) → download_path per asset
+  FE->>API: GET …/vault-access/{asset}/download (Bearer JWT)
+  API->>V: decrypt_file(storage_key)
+  V->>S3: get_object(…name.enc)
+  V->>V: AESGCM decrypt (nonce ‖ ciphertext)
+  API-->>FE: 200 plaintext stream (Content-Disposition: attachment) + audit log
+</pre>
+  </div>
+  <div class="callout sec"><b>Two crypto surfaces, one routine.</b> The same <code>_encrypt/_decrypt</code> primitives from <code>vault.py</code> also seal proposal <code>messages</code> (stored as BYTEA in Postgres). Files live in MinIO; messages live in Postgres — but both are GCM-sealed with the same derived key.</div>
+
+  <!-- ============================================================ -->
+  <h2 id="f-search">13 · Domain Flow — Discovery (Semantic Search)</h2>
+  <p>A manufacturer's natural-language query is parsed into structured intent by an LLM, the <i>refined</i> query is embedded, Qdrant returns nearest neighbours, full listings are hydrated from Postgres preserving vector rank, and a <b>demand signal</b> is recorded for analytics.</p>
+  <div class="diagram">
+    <div class="cap">Swim-lane — intent → embed → ANN → hydrate → log demand</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant FE as Next.js
+  participant API as /search
+  participant SVC as search svc
+  participant AI as llm (NVIDIA)
+  participant EMB as embeddings (NVIDIA)
+  participant Q as Qdrant
+  participant PG as PostgreSQL
+
+  FE->>API: POST /search {query, limit}
+  API->>SVC: semantic_search()
+  SVC->>AI: complete(discovery_intent_parse) → JSON intent
+  Note right of AI: {product_type, industry, keywords, refined_query}
+  SVC->>EMB: embed_text(refined_query, "query") → 1024-d
+  SVC->>Q: query_points(vector, limit, with_payload)
+  Q-->>SVC: scored points (listing_id + score)
+  SVC->>PG: SELECT listings WHERE id IN(...) AND status=published
+  SVC->>SVC: re-order by Qdrant score
+  SVC->>PG: INSERT demand_signals (CAST(:intent AS JSONB))
+  SVC->>SVC: metrics.searches_total.inc() (+zero_results)
+  API-->>FE: {intent, results[{listing,score}], total}
+</pre>
+  </div>
+  <div class="callout warn"><b>kNN property.</b> Vector search returns the top-K nearest neighbours regardless of absolute relevance, so <code>result_count = 0</code> (a "demand gap") is rare whenever ≥K listings exist. Treat <i>top queries / industries / product types</i> as the reliable demand metrics; gaps are a weak secondary signal by design.</div>
+
+  <!-- ============================================================ -->
+  <h2 id="f-proposal">14 · Domain Flow — Proposal Negotiation & PII Firewall</h2>
+  <p>Buyers open a proposal against a listing, exchange structured offers/counters (each persisted as a <code>proposal_version</code>), and chat in an encrypted thread. Every message is screened by an LLM classifier; anything containing contact info is stored but <b>blocked from display</b> — the platform's disintermediation guarantee.</p>
+  <div class="diagram">
+    <div class="cap">Swim-lane — submit → counter → message (PII scan) → accept → spawn transaction</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant B as Buyer (FE)
+  participant S as Seller (FE)
+  participant API as /proposals
+  participant PSV as proposals svc
+  participant MSV as messages svc
+  participant AI as llm (NVIDIA)
+  participant PG as PostgreSQL
+
+  B->>API: POST /proposals {listing_id}
+  API->>PSV: create_proposal (409 if active dup exists)
+  PSV->>PG: INSERT proposals(status=draft)
+  PSV->>PSV: metrics.proposals_created_total.inc()
+
+  B->>API: POST /proposals/{id}/submit {amount,license,territory,months}
+  API->>PG: INSERT proposal_versions · status=submitted
+
+  S->>API: POST /proposals/{id}/counter {...}
+  API->>PG: INSERT proposal_versions (negotiating)
+
+  B->>API: POST /proposals/{id}/messages {text}
+  API->>MSV: send_message()
+  MSV->>AI: complete(contact_detection_classifier) → {contains_contact}
+  MSV->>MSV: AES-256-GCM encrypt(text)
+  MSV->>PG: INSERT messages(encrypted_content, is_blocked, reason)
+  alt contains contact info
+    API-->>B: "[Message blocked: contains contact information]"
+  else clean
+    API-->>S: decrypted text on read
+  end
+
+  S->>API: POST /proposals/{id}/accept
+  API->>PSV: accept_proposal()
+  PSV->>PG: status=accepted
+  PSV->>PG: create_from_proposal() → INSERT transactions(pending_legal)
+  Note right of PG: fees: 5% Saha · 3% legal · 1% escrow
+  API-->>S: 200 (transaction now exists)
+</pre>
+  </div>
+
+  <h3>14.1 Proposal status machine</h3>
+  <div class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> draft
+  draft --> submitted: submit
+  submitted --> nda_pending
+  nda_pending --> nda_signed
+  submitted --> negotiating: counter
+  nda_signed --> negotiating
+  negotiating --> negotiating: counter
+  negotiating --> accepted: accept ➜ Transaction
+  submitted --> accepted: accept ➜ Transaction
+  negotiating --> rejected: reject
+  submitted --> rejected
+  draft --> withdrawn: withdraw
+  accepted --> [*]
+  rejected --> [*]
+  withdrawn --> [*]
+</pre>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="f-legal">15 · Domain Flow — Legal Workspace & AI Contract</h2>
+  <p>An accepted proposal auto-creates a <code>transaction</code> in <code>pending_legal</code>. A law-firm partner is assigned, <b>Anthropic</b> drafts a license agreement (stored in MinIO), parties sign (DocuSign — mocked when unconfigured), and the deal reaches <code>signed</code>, ready for settlement.</p>
+  <div class="diagram">
+    <div class="cap">Swim-lane — assign firm → AI draft (Anthropic→MinIO) → sign</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant FE as Next.js
+  participant API as /transactions
+  participant TSV as transactions svc
+  participant ANT as Anthropic
+  participant S3 as MinIO
+  participant PG as PostgreSQL
+
+  FE->>API: GET /transactions/law-firms
+  API-->>FE: partner directory
+  FE->>API: POST /{id}/assign-law-firm {law_firm_id}
+  API->>TSV: assign_law_firm() (only in pending_legal)
+  TSV->>PG: law_firm_id set · status=contract_drafting
+
+  FE->>API: POST /{id}/draft-contract
+  API->>TSV: draft_contract()
+  TSV->>ANT: complete(legal_concept_assistant, deal_summary)
+  ANT-->>TSV: contract text
+  TSV->>S3: put_object(contracts/{txn}/draft.txt)
+  TSV->>PG: contract_storage_key · status=contract_review
+  API-->>FE: {contract_text, transaction}
+
+  FE->>API: POST /{id}/sign
+  API->>TSV: sign_contract()
+  Note right of TSV: DOCUSIGN_ACCOUNT_ID==REPLACE_ME ⇒ mock-sign
+  TSV->>PG: status=signed
+  API-->>FE: 200 signed
+</pre>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="f-settle">16 · Domain Flow — Settlement, Escrow & Vault Release</h2>
+  <p>The money path. A signed deal funds a Stripe escrow; on confirmation the buyer earns vault access; disbursement splits funds and completes the deal. Stripe runs in <b>mock mode</b> when the key contains <code>REPLACE_ME</code> — deterministic fake intent/transfer IDs, no network call.</p>
+  <div class="diagram">
+    <div class="cap">Swim-lane — escrow create → confirm (vault unlock) → disburse (fee split)</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant FE as Next.js
+  participant API as /settlement
+  participant SS as settlement svc
+  participant STR as Stripe (mock / live)
+  participant S3 as MinIO
+  participant PG as PostgreSQL
+
+  FE->>API: POST /{id}/escrow/create
+  API->>SS: create_escrow() (requires status=signed)
+  SS->>STR: create_payment_intent(deal_value)
+  STR-->>SS: {id: pi_…}
+  SS->>PG: stripe_payment_intent_id · status=escrow_pending
+  API-->>FE: escrow_pending
+
+  FE->>API: POST /{id}/escrow/confirm
+  API->>SS: confirm_escrow_funded()
+  SS->>STR: confirm_payment_intent()
+  SS->>PG: status=escrow_funded · escrow_funded_at=now
+  API-->>FE: escrow_funded
+
+  Note over FE,S3: Buyer vault access unlocks ONLY now
+  FE->>API: GET /{id}/vault-access
+  API->>SS: get_vault_access_files(buyer)
+  API-->>FE: [{filename, download_path}]
+  FE->>API: GET /{id}/vault-access/{asset}/download
+  API->>SS: download_vault_asset() → decrypt server-side
+  API-->>FE: plaintext file (audited)
+
+  FE->>API: POST /{id}/disburse
+  API->>SS: disburse() (requires escrow_funded)
+  SS->>SS: ip_holder = deal − 5% − 3% − 1%
+  SS->>STR: create_transfer(ip_holder → seller)
+  SS->>STR: create_transfer(legal_fee → law firm)
+  SS->>PG: INSERT disbursements · status=completed · disbursed_at=now
+  SS->>SS: metrics: completed++, disbursed_usd+=, commission_usd+=
+  API-->>FE: completed + disbursement breakdown
+</pre>
+  </div>
+
+  <h3>16.1 Transaction state machine (legal → settled)</h3>
+  <div class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> pending_legal: proposal accepted
+  pending_legal --> contract_drafting: assign law firm
+  contract_drafting --> contract_review: AI draft (Anthropic→MinIO)
+  contract_review --> signing_pending
+  signing_pending --> signed: sign (DocuSign/mock)
+  contract_review --> signed: sign
+  signed --> escrow_pending: escrow/create (Stripe PI)
+  escrow_pending --> escrow_funded: escrow/confirm  ➜ vault unlock
+  escrow_funded --> disbursement_pending
+  disbursement_pending --> completed: disburse (fee split)
+  escrow_funded --> completed: disburse
+  pending_legal --> cancelled
+  contract_review --> disputed
+  completed --> [*]
+  cancelled --> [*]
+</pre>
+  </div>
+  <h4>Fee waterfall (worked example, $40,000 deal)</h4>
+  <table>
+    <thead><tr><th>Component</th><th>Rate</th><th>Amount</th><th>Recipient</th></tr></thead>
+    <tbody>
+      <tr><td>Deal value (escrow)</td><td>100%</td><td class="mono">$40,000.00</td><td>held by platform</td></tr>
+      <tr><td>Saha commission</td><td>5%</td><td class="mono">$2,000.00</td><td>platform revenue → <code>commission_usd_total</code></td></tr>
+      <tr><td>Legal fee</td><td>3%</td><td class="mono">$1,200.00</td><td>law firm transfer</td></tr>
+      <tr><td>Escrow fee</td><td>1%</td><td class="mono">$400.00</td><td>retained</td></tr>
+      <tr><td><b>IP holder net</b></td><td>91%</td><td class="mono"><b>$36,400.00</b></td><td>seller transfer → <code>disbursed_usd_total</code></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================================ -->
+  <h2 id="f-review">17 · Domain Flow — Reviews & Reputation</h2>
+  <p>Only the two parties to a <code>completed</code> transaction may review each other — exactly once each. Reputation is the running average + recent history of reviews <i>received</i>.</p>
+  <div class="diagram">
+    <div class="cap">Sequence — guarded review creation & reputation read</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant FE as Next.js
+  participant API as /reviews
+  participant RSV as reviews svc
+  participant PG as PostgreSQL
+
+  FE->>API: POST /transactions/{id}/reviews {rating 1-5, comment}
+  API->>RSV: create_review()
+  RSV->>RSV: assert txn.status == completed
+  RSV->>RSV: reviewee = counterparty(reviewer)
+  RSV->>PG: SELECT existing (txn, reviewer)
+  alt already reviewed
+    RSV-->>FE: 409 Conflict
+  else first review
+    RSV->>PG: INSERT reviews
+    RSV->>RSV: metrics.reviews_created_total.inc()
+    RSV-->>FE: 201 review
+  end
+
+  FE->>API: GET /users/{id}/reputation
+  API->>RSV: get_reputation()
+  RSV->>PG: AVG(rating), COUNT, last 20
+  API-->>FE: {average_rating, review_count, reviews[]}
+</pre>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="f-demand">18 · Domain Flow — Demand Intelligence</h2>
+  <p>Every search silently writes a <code>demand_signal</code>. The demand service aggregates that ledger into market insight for creators: what's searched, by whom, in which industries, and where demand goes unmet.</p>
+  <div class="diagram">
+    <div class="cap">Flow — capture (write path) feeds aggregate (read path)</div>
+<pre class="mermaid">
+flowchart LR
+  subgraph WRITE["Capture — on every search (§13)"]
+    s1["search svc"] -->|"INSERT … CAST(:intent AS JSONB)"| ds[("demand_signals")]:::data
+  end
+  subgraph READ["Aggregate — GET /demand/overview?days=N"]
+    d1["demand svc"] --> q1["totals: count · distinct users · unmet"]
+    d1 --> q2["top_queries GROUP BY lower(query)"]
+    d1 --> q3["top_industries: parsed_intent-&gt;&gt;industry"]
+    d1 --> q4["top_product_types: parsed_intent-&gt;&gt;product_type"]
+    d1 --> q5["demand_gaps WHERE result_count=0"]
+  end
+  ds --> d1
+  q1 & q2 & q3 & q4 & q5 --> DASH["/dashboard/demand<br/>(creator nav)"]:::client
+  classDef data fill:#2a1f0c,stroke:#ffb454,color:#ffeccb;
+  classDef client fill:#0c2740,stroke:#3fd0ff,color:#e8f1fb;
+</pre>
+  </div>
+  <div class="callout danger"><b>Bug fixed in this lineage.</b> The capture INSERT originally used <code>:parsed_intent::jsonb</code>. SQLAlchemy <code>text()</code> treats <code>::</code> as an escaped literal colon, so the bind was mangled → asyncpg syntax error, swallowed by a best-effort <code>try/except</code>. <code>demand_signals</code> was silently <i>never</i> persisted until it was corrected to <code>CAST(:parsed_intent AS JSONB)</code>.</div>
+
+  <!-- ============================================================ -->
+  <h2 id="f-admin">19 · Domain Flow — Admin Console</h2>
+  <p>A read-mostly oversight surface gated by <code>require_admin</code>. It aggregates across existing tables — no admin-specific schema — and offers one mutation: enable/disable a user.</p>
+  <div class="diagram">
+    <div class="cap">Flow — admin reads span the whole system of record</div>
+<pre class="mermaid">
+flowchart TD
+  ADM["Admin (role=admin)"]:::client --> G["require_admin (403 otherwise)"]
+  G --> ST["GET /admin/stats"] --> AGG["COUNTs + GROUP BYs + SUM(disbursements)"]
+  G --> US["GET /admin/users"] --> TU[("users")]:::data
+  G --> TX["GET /admin/transactions"] --> TT[("transactions")]:::data
+  G --> AL["GET /admin/audit-logs"] --> TA[("audit_logs")]:::data
+  G --> SA["POST /admin/users/{id}/active"] --> MUT["UPDATE users.is_active"]
+  AGG --> TU & TT & TA
+  AGG --> TL[("listings · proposals · reviews")]:::data
+  classDef client fill:#0c2740,stroke:#3fd0ff,color:#e8f1fb;
+  classDef data fill:#2a1f0c,stroke:#ffb454,color:#ffeccb;
+</pre>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="f-social">20 · Domain Flow — Social Communities & Group Chat</h2>
+  <p>The social layer lets members gather around an IP R&amp;D topic and talk. It deliberately inverts the secrecy
+  model of proposal messaging: where a <code>proposals.messages</code> thread is private, AES-256-GCM-encrypted and
+  PII-firewalled (parties must <i>not</i> swap contact details), a <code>community_messages</code> thread is the
+  opposite — open group discussion stored as <b>plaintext</b>, where <b>membership is the only access boundary</b>.
+  Three tables back it: <code>communities</code> (the group, with a unique generated slug + public/private visibility),
+  <code>community_memberships</code> (a <code>UNIQUE(community_id, user_id)</code> join carrying an owner/moderator/member
+  role), and <code>community_messages</code>.</p>
+
+  <div class="grid3">
+    <div class="card"><h4 style="margin-top:0">Authorization split</h4>Reads of public communities need only <code>get_current_user</code>; <b>writes</b> (create · join · leave · post · edit) need <code>require_verified_user</code> (KYC); reading a community's <b>chat</b> additionally requires <b>membership</b> (403 otherwise). Private communities are invisible to non-members and cannot be self-joined.</div>
+    <div class="card"><h4 style="margin-top:0">Owner lifecycle</h4>Creating a community runs in one transaction: <code>flush()</code> assigns the id, then the creator is inserted as an <code>OWNER</code> membership. Owners cannot leave their own community (400). Slugs are generated from the name; collisions get a <code>-{6&nbsp;hex}</code> suffix.</div>
+    <div class="card"><h4 style="margin-top:0">Read model</h4>Each <code>CommunityResponse</code> is enriched per request with <code>member_count</code>, the caller's <code>is_member</code>, and their <code>my_role</code>. Chat fetches return newest-N then reverse to oldest-first for natural rendering; messages carry the sender's display name (joined from <code>users</code>).</div>
+  </div>
+
+  <div class="diagram">
+    <div class="cap">Sequence — discover → join → post → read (membership gate)</div>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  actor U as Member (verified)
+  participant API as communities router
+  participant SVC as communities service
+  participant DB as PostgreSQL
+  U->>API: GET /communities?q&topic
+  API->>SVC: browse_communities (public only)
+  SVC->>DB: SELECT … ORDER BY member_count DESC
+  DB-->>U: list + member_count + is_member
+  U->>API: POST /communities/{id}/join
+  API->>SVC: join_community (require_verified_user)
+  SVC->>DB: INSERT membership (role=member)
+  U->>API: POST /communities/{id}/messages
+  API->>SVC: post_message
+  SVC->>DB: assert membership → INSERT community_messages
+  SVC-->>API: metrics.community_messages_total.inc()
+  U->>API: GET /communities/{id}/messages
+  API->>SVC: membership check (403 if not member)
+  SVC->>DB: SELECT newest-N JOIN users → reverse
+  DB-->>U: oldest-first thread + sender_name
+</pre>
+  </div>
+
+  <div class="callout sec"><b>Why plaintext here is correct.</b> The proposal PII firewall exists to stop two negotiating parties from taking a deal <i>off-platform</i>. A community is the explicit opposite intent — open collaboration to <i>encourage</i> R&amp;D — so the same controls would be counter-productive. The trust boundary moves from <i>encryption</i> to <i>membership</i>: non-members can't read the chat at all, and only verified users can post.</div>
+
+  <!-- ============================================================ -->
+  <h2 id="observability">21 · Observability & Metrics</h2>
+  <p>The backend mounts the Prometheus ASGI app at <code>/metrics/</code> (trailing slash; a bare <code>/metrics</code> 307-redirects). Custom business counters live in <code>app/core/metrics.py</code> and are <b>eagerly imported in <code>main.py</code></b> so they register at startup (exposed at 0 before any traffic).</p>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0">Business metrics (the <code>saha_</code> namespace)</h4>
+      <table>
+        <tr><td class="mono">saha_searches_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_search_zero_results_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_listings_published_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_materials_created_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_communities_created_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_community_messages_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_proposals_created_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_transactions_created_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_transactions_completed_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_reviews_created_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_deal_value_usd</td><td>histogram</td></tr>
+        <tr><td class="mono">saha_disbursed_usd_total</td><td>counter</td></tr>
+        <tr><td class="mono">saha_commission_usd_total</td><td>counter</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">Scrape & dashboards</h4>
+      <pre class="code">prometheus.yml
+  job: saha_backend
+  target: host.docker.internal:8000
+  metrics_path: /metrics/   # trailing slash!</pre>
+      <p>Prometheus (:9091) scrapes every 15s → Grafana (:3001) visualises. Loki (:3100) is wired for log aggregation. The <code>/health</code> endpoint deep-checks Postgres, Redis, MinIO, Qdrant, SMTP, and the active AI provider; <code>/health/live</code> and <code>/health/ready</code> serve as cheap k8s-style liveness/readiness probes.</p>
+    </div>
+  </div>
+  <div class="diagram">
+    <div class="cap">Flow — instrumentation → scrape → visualise</div>
+<pre class="mermaid">
+flowchart LR
+  SVC["services (.inc / .observe)"] --> REG["default Prometheus REGISTRY<br/>(eager import in main.py)"]
+  REG --> EP["/metrics/ ASGI mount"]
+  PROM["Prometheus :9091"] -->|scrape 15s| EP
+  GRAF["Grafana :3001"] --> PROM
+  GRAF --> LOKI["Loki :3100"]
+  HC["/health"] -.deep check.-> PGc[("PG")] & RDc[("Redis")] & MNc[("MinIO")] & QDc[("Qdrant")] & AIc["AI provider"]
+</pre>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="integrations">22 · External Integration Map</h2>
+  <p>Every outbound dependency, its transport, its mock/live switch, and its failure posture. Mockable integrations let the whole funnel run offline on the edge.</p>
+  <table>
+    <thead><tr><th>Integration</th><th class="mono">module</th><th>Transport</th><th>Mock switch</th><th>Failure posture</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag ext">NVIDIA NIM chat</span></td><td class="mono">ai/providers/nvidia</td><td>HTTPS</td><td>—</td><td>caller try/except → safe fallback (e.g. raw query)</td></tr>
+      <tr><td><span class="tag ext">NVIDIA embeddings</span></td><td class="mono">services/embeddings</td><td>HTTPS · integrate.api.nvidia.com</td><td>—</td><td><code>raise_for_status</code> propagates</td></tr>
+      <tr><td><span class="tag ext">Anthropic</span></td><td class="mono">ai/providers/anthropic</td><td>HTTPS</td><td>key <code>sk-ant-REPLACE…</code> ⇒ routing falls back</td><td>pinned for legal only</td></tr>
+      <tr><td><span class="tag ext">Stripe</span></td><td class="mono">integrations/stripe_client</td><td>HTTPS form POST</td><td><code>REPLACE_ME</code> in key ⇒ mock IDs</td><td><code>raise_for_status</code></td></tr>
+      <tr><td><span class="tag ext">Persona KYC</span></td><td class="mono">integrations/kyc</td><td>HTTPS + HMAC webhook</td><td><code>KYC_MOCK_MODE=true</code></td><td>webhook sig verified (HMAC-SHA256)</td></tr>
+      <tr><td><span class="tag ext">DocuSign</span></td><td class="mono">services/transactions</td><td>(stub)</td><td><code>DOCUSIGN_ACCOUNT_ID==REPLACE_ME</code> ⇒ mock-sign</td><td>—</td></tr>
+      <tr><td><span class="tag ext">SMTP</span></td><td class="mono">integrations/email</td><td>SMTP (aiosmtplib)</td><td>MailHog :1025 in dev</td><td>best-effort</td></tr>
+      <tr><td><span class="tag ext">MinIO (S3)</span></td><td class="mono">integrations/storage</td><td>S3 API (aioboto3)</td><td>—</td><td>bucket auto-create on boot</td></tr>
+      <tr><td><span class="tag ext">Qdrant</span></td><td class="mono">integrations/vector</td><td>REST :6333</td><td>—</td><td>collection auto-create (1024-d cosine)</td></tr>
+      <tr><td><span class="tag ext">Redis</span></td><td class="mono">ai/sessions</td><td>RESP :6379</td><td>—</td><td>session TTL 24h</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================================ -->
+  <h2 id="keys">23 · Key & Storage Conventions</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0">MinIO object keys</h4>
+      <pre class="code">vault/{listing_id}/{asset_id}/{filename}.enc   # encrypted IP files
+contracts/{transaction_id}/draft.txt           # AI-drafted contracts</pre>
+      <h4>Redis keys</h4>
+      <pre class="code">bom:session:{listing_id}:{user_id}   # AI dialogue, SETEX 86400s</pre>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">Qdrant</h4>
+      <pre class="code">collection: ip_listings
+vectors:    size=1024, distance=COSINE
+payload:    {listing_id, creator_id, title,
+             public_description, tags, product_category}</pre>
+      <h4>JWT claims</h4>
+      <pre class="code">{ sub: user_id, role, exp, type: "access" }
+alg HS256 · access TTL (dev 480m) · refresh 7d</pre>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="api">24 · Full API Catalogue</h2>
+  <p>All logical endpoints by router. <span class="tag get">GET</span> read · <span class="tag post">POST</span> mutate. Guard legend: <span class="pill">opt</span> optional auth · <span class="pill">verified</span> require_verified_user · <span class="pill">admin</span> require_admin · <span class="pill">public</span> none.</p>
+
+  <h4>Auth · <code>/api/v1/auth</code></h4>
+  <table>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/register</td><td>create user (bcrypt)</td><td><span class="pill">public</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/login</td><td>issue access + refresh</td><td><span class="pill">public</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/refresh</td><td>rotate tokens (family)</td><td><span class="pill">public</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/logout</td><td>revoke refresh</td><td><span class="pill">verified</span></td></tr>
+  </table>
+
+  <h4>Users & KYC · <code>/api/v1/users</code> · <code>/webhooks</code></h4>
+  <table>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/users/me</td><td>current profile</td><td><span class="pill">auth</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/users/me/kyc/initiate</td><td>start Persona inquiry → in_review</td><td><span class="pill">auth</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/users/me/kyc/complete</td><td>mock-complete verification</td><td><span class="pill">auth</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/webhooks/kyc</td><td>Persona webhook (HMAC verified)</td><td><span class="pill">public</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/webhooks/stripe</td><td>payment_intent.succeeded → escrow funded (HMAC + replay-protected)</td><td><span class="pill">public</span></td></tr>
+  </table>
+
+  <h4>Listings · <code>/api/v1/listings</code></h4>
+  <table>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/</td><td>create draft</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/me</td><td>my listings</td><td><span class="pill">auth</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/public</td><td>published feed</td><td><span class="pill">opt</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/{id}</td><td>detail</td><td><span class="pill">opt</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/dialogue/start</td><td>begin BOM chat (Redis)</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/dialogue</td><td>send turn</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/{id}/dialogue</td><td>load transcript</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/finalize-bom</td><td>parse → bom_items</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/files</td><td>encrypted vault upload</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/publish</td><td>embed → Qdrant; publish</td><td><span class="pill">verified</span></td></tr>
+  </table>
+
+  <h4>Raw Materials · <code>/api/v1/materials</code> (secondary marketplace — verified-only, ownership-gated)</h4>
+  <table>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/</td><td>list a material (audited)</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/me</td><td>my material listings (all statuses)</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/?q&category&region&country</td><td>browse active listings + seller contact</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/{id}</td><td>detail (non-active visible to owner only)</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post" style="background:#1c2b3a;color:#9cc7ff">PATCH</span></td><td class="mono">/{id}</td><td>partial update incl. pause/resume</td><td><span class="pill">owner</span></td></tr>
+    <tr><td><span class="tag del" style="background:#3a1320;color:#ff9db1">DEL</span></td><td class="mono">/{id}</td><td>archive (soft delete)</td><td><span class="pill">owner</span></td></tr>
+  </table>
+
+  <h4>Communities · <code>/api/v1/communities</code> (social — reads=auth, writes=verified, chat=member-only)</h4>
+  <table>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/</td><td>create (creator auto-owner; audited)</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/me</td><td>communities I belong to</td><td><span class="pill">auth</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/?q&topic</td><td>browse public communities (member_count desc)</td><td><span class="pill">auth</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/{id}</td><td>detail + member_count + is_member + my_role</td><td><span class="pill">auth</span></td></tr>
+    <tr><td><span class="tag post" style="background:#1c2b3a;color:#9cc7ff">PATCH</span></td><td class="mono">/{id}</td><td>edit name/desc/topic/visibility</td><td><span class="pill">owner</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/join</td><td>join (public only; private = 403)</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/leave</td><td>leave (owner blocked → 400); 204</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/{id}/members</td><td>roster + roles</td><td><span class="pill">auth</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/{id}/messages</td><td>oldest-first chat + sender names</td><td><span class="pill">member</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/messages</td><td>post plaintext message</td><td><span class="pill">member</span></td></tr>
+  </table>
+
+  <h4>Discovery · <code>/api/v1/search</code></h4>
+  <table>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/search</td><td>intent→embed→ANN→demand log</td><td><span class="pill">opt</span></td></tr>
+  </table>
+
+  <h4>Proposals · <code>/api/v1/proposals</code></h4>
+  <table>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/</td><td>open (409 on active dup)</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/ · /{id}</td><td>list / detail</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/submit · /counter</td><td>new proposal_version</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/accept</td><td>→ spawns transaction</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/reject · /withdraw</td><td>close</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/messages</td><td>encrypted + PII scan</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/{id}/messages</td><td>decrypt thread</td><td><span class="pill">verified</span></td></tr>
+  </table>
+
+  <h4>Legal · <code>/api/v1/transactions</code></h4>
+  <table>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/ · /{id}</td><td>my deals / detail</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/law-firms</td><td>partner directory</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/assign-law-firm</td><td>→ contract_drafting</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/draft-contract</td><td>Anthropic → MinIO</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/sign</td><td>DocuSign/mock → signed</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/{id}/status</td><td>guarded transition (money statuses blocked — settlement-only)</td><td><span class="pill">verified</span></td></tr>
+  </table>
+
+  <h4>Settlement · <code>/api/v1/transactions/{id}</code></h4>
+  <table>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/escrow/create</td><td>Stripe PaymentIntent</td><td><span class="pill">buyer</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/escrow/confirm</td><td>fund → unlock vault (dev; prod via Stripe webhook)</td><td><span class="pill">buyer</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/disburse</td><td>fee split → completed</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/vault-access</td><td>list assets + download paths</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/vault-access/{asset}/download</td><td>server-side decrypt + stream (audited)</td><td><span class="pill">verified</span></td></tr>
+  </table>
+
+  <h4>Reviews & Demand · <code>/api/v1</code></h4>
+  <table>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/transactions/{id}/reviews</td><td>rate counterparty (1/party)</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/transactions/{id}/reviews</td><td>both reviews</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/users/{id}/reputation</td><td>avg + history</td><td><span class="pill">verified</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/demand/overview?days=N</td><td>market analytics</td><td><span class="pill">verified</span></td></tr>
+  </table>
+
+  <h4>Admin · <code>/api/v1/admin</code> (consumed by the dedicated Admin Console app on :3002; every mutation is audited) · Ops</h4>
+  <table>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/stats</td><td>platform aggregates + pipeline value</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/demand?days=N</td><td>demand intelligence (admin passthrough)</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/users</td><td>search + filter (role/KYC/active)</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/users/{id}</td><td>detail: counts, rating, recent activity</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/users/{id}/active · /role · /kyc</td><td>enable/disable · change role · KYC override (reasoned, audited; self-demotion/self-disable blocked)</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/listings</td><td>all statuses, search + creator email</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/listings/{id}/archive · /restore</td><td>moderation takedown (de-indexes Qdrant) / restore to review</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/proposals</td><td>negotiation oversight (messages stay encrypted)</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/transactions</td><td>filterable deal oversight</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/transactions/{id}/dispute · /resolve</td><td>freeze a deal / resolve as complete|cancel (reasoned)</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/reviews</td><td>review moderation list</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag del" style="background:#3a1320;color:#ff9db1">DEL</span></td><td class="mono">/reviews/{id}</td><td>remove abusive/fraudulent review</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/law-firms</td><td>all partner firms (incl. inactive)</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag post">POST</span></td><td class="mono">/law-firms · PATCH /law-firms/{id}</td><td>partner CRUD + activate/deactivate</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/disbursements</td><td>revenue ledger</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/audit-logs</td><td>filter by action prefix + user</td><td><span class="pill">admin</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/health/live</td><td>liveness probe (no dependency checks)</td><td><span class="pill">public</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/health/ready</td><td>readiness probe (Postgres + Redis; 503 if not ready)</td><td><span class="pill">public</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/health</td><td>deep dependency check</td><td><span class="pill">public</span></td></tr>
+    <tr><td><span class="tag get">GET</span></td><td class="mono">/metrics/</td><td>Prometheus exposition</td><td><span class="pill">public</span></td></tr>
+  </table>
+
+  <!-- ============================================================ -->
+  <h2 id="drawio">25 · draw.io Architecture Diagrams</h2>
+  <p>Two icon-rich reference posters ship alongside this document as importable <code>.drawio</code> XML. They render with native shapes (cylinders, clouds, actors, components) and a layered colour scheme matching the legend above.</p>
+  <table>
+    <thead><tr><th>File</th><th>Diagram</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">saha-system-architecture.drawio</td><td>C4-L2 container poster — client → API layers → datastores → external clouds → observability</td><td>the wall-poster system map</td></tr>
+      <tr><td class="mono">saha-deployment-topology.drawio</td><td>Physical deployment — Jetson host, native PG, Docker network, host processes & ports</td><td>infra / ops onboarding</td></tr>
+    </tbody>
+  </table>
+  <h4>How to open</h4>
+  <ol>
+    <li>Go to <a href="https://app.diagrams.net" target="_blank">app.diagrams.net</a> (or VS Code “Draw.io Integration” extension).</li>
+    <li><b>File → Open From → Device</b> and pick the <code>.drawio</code> file, or <b>Extras → Edit Diagram</b> and paste the XML.</li>
+    <li>Everything is editable — drag, restyle, or swap in vendor stencils (AWS/Azure/GCP shape libraries via <b>More Shapes…</b>).</li>
+  </ol>
+  <div class="callout"><b>Tip.</b> To re-skin with official vendor icons: enable the AWS-2024 / Azure shape library in draw.io, then right-click a node → <b>Edit Style</b> and replace the <code>shape=</code> token. Node IDs and edges are preserved.</div>
+
+  <hr/>
+  <p class="footnote">Generated as a living architecture reference for the Saha IP Transaction OS. Diagrams render client-side via Mermaid 10 (CDN). All flows, ports, keys, and endpoints reflect the implemented codebase through the 2026-06-18 release (social communities &amp; group chat), on top of the 2026-06-10 release (open roles · raw-materials secondary marketplace) and Sprint 9 (settlement · reviews · demand intelligence · metrics · admin). For component-level deep dives see the companion <a href="./SAHA_BACKEND.html">Backend</a> and <a href="./SAHA_FRONTEND.html">Frontend</a> application references.</p>
+</main>
+
+<div class="toolbar">
+  <button onclick="document.querySelectorAll('details').forEach(d=>d.open=true)">Expand all</button>
+  <button onclick="document.querySelectorAll('details').forEach(d=>d.open=false)">Collapse all</button>
+  <button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+</div>
+
+<script>
+  // Scroll-spy: highlight active TOC link
+  const links = [...document.querySelectorAll('#toc a[href^="#"]')];
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = map.get(e.target.id);
+        if (a) { a.classList.add('active'); }
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px', threshold: 0 });
+  document.querySelectorAll('main h2[id]').forEach(h => obs.observe(h));
+</script>
+
+<script>
+/* Diagram zoom / pan lightbox — vanilla JS, no dependencies */
+(function(){
+  const overlay = document.createElement('div');
+  overlay.id = 'zoom-overlay';
+  overlay.innerHTML =
+    '<div class="zoom-title"></div>' +
+    '<div class="zoom-controls">' +
+      '<button type="button" data-z="out" title="Zoom out">−</button>' +
+      '<button type="button" data-z="in" title="Zoom in">+</button>' +
+      '<button type="button" data-z="reset" title="Fit to screen">Fit</button>' +
+      '<button type="button" data-z="close" title="Close (Esc)">✕</button>' +
+    '</div>' +
+    '<div class="zoom-stage"><div class="zoom-canvas"></div></div>' +
+    '<div class="zoom-hint">scroll to zoom · drag to pan · +/−/0 keys · Esc to close</div>';
+  document.body.appendChild(overlay);
+  const stage = overlay.querySelector('.zoom-stage');
+  const canvas = overlay.querySelector('.zoom-canvas');
+  const title = overlay.querySelector('.zoom-title');
+  const MIN = 0.15, MAX = 16;
+  let scale = 1, tx = 0, ty = 0, baseW = 800, baseH = 600, drag = false, sx = 0, sy = 0;
+
+  const apply = () => { canvas.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')'; };
+
+  // Give every id in the cloned SVG a fresh name so url(#…) marker/clip refs
+  // resolve to the clone, not the original diagram still in the page.
+  function uniquify(svgEl){
+    const seed = 'z' + Math.random().toString(36).slice(2,7) + '_';
+    const map = {};
+    svgEl.querySelectorAll('[id]').forEach((el, i) => { map[el.id] = seed + i; el.id = seed + i; });
+    const attrs = ['href','xlink:href','fill','stroke','clip-path','mask','filter','marker-start','marker-mid','marker-end'];
+    svgEl.querySelectorAll('*').forEach(el => {
+      attrs.forEach(a => {
+        const v = el.getAttribute(a); if (!v || v.indexOf('#') === -1) return;
+        let nv = v;
+        for (const o in map) { nv = nv.split('#' + o + ')').join('#' + map[o] + ')'); if (nv === '#' + o) nv = '#' + map[o]; }
+        if (nv !== v) el.setAttribute(a, nv);
+      });
+    });
+  }
+
+  function fit(){
+    const vw = innerWidth, vh = innerHeight;
+    scale = Math.min(vw * 0.94 / baseW, (vh - 96) * 0.94 / baseH);
+    scale = Math.min(Math.max(scale, MIN), MAX);
+    tx = (vw - baseW * scale) / 2;
+    ty = (vh - baseH * scale) / 2;
+    apply();
+  }
+  function open(svg, caption){
+    canvas.innerHTML = '';
+    const clone = svg.cloneNode(true);
+    uniquify(clone);
+    const vb = (svg.getAttribute('viewBox') || '').split(/[\s,]+/).map(parseFloat);
+    baseW = (vb[2] > 0 ? vb[2] : svg.getBoundingClientRect().width) || 800;
+    baseH = (vb[3] > 0 ? vb[3] : svg.getBoundingClientRect().height) || 600;
+    clone.removeAttribute('style');
+    clone.setAttribute('width', baseW); clone.setAttribute('height', baseH);
+    clone.style.maxWidth = 'none'; clone.style.width = baseW + 'px'; clone.style.height = baseH + 'px';
+    canvas.appendChild(clone);
+    title.textContent = caption || '';
+    overlay.classList.add('open');
+    document.documentElement.style.overflow = 'hidden';
+    fit();
+  }
+  function close(){ overlay.classList.remove('open'); document.documentElement.style.overflow = ''; }
+  function zoomAt(cx, cy, f){
+    const ns = Math.min(Math.max(scale * f, MIN), MAX);
+    tx = cx - (cx - tx) * (ns / scale);
+    ty = cy - (cy - ty) * (ns / scale);
+    scale = ns; apply();
+  }
+
+  overlay.querySelector('.zoom-controls').addEventListener('click', e => {
+    const z = e.target.getAttribute('data-z'); if (!z) return;
+    if (z === 'in') zoomAt(innerWidth / 2, innerHeight / 2, 1.3);
+    else if (z === 'out') zoomAt(innerWidth / 2, innerHeight / 2, 1 / 1.3);
+    else if (z === 'reset') fit();
+    else if (z === 'close') close();
+  });
+  stage.addEventListener('wheel', e => { e.preventDefault(); zoomAt(e.clientX, e.clientY, e.deltaY < 0 ? 1.12 : 1 / 1.12); }, { passive: false });
+  stage.addEventListener('pointerdown', e => { drag = true; sx = e.clientX - tx; sy = e.clientY - ty; stage.setPointerCapture(e.pointerId); });
+  stage.addEventListener('pointermove', e => { if (drag) { tx = e.clientX - sx; ty = e.clientY - sy; apply(); } });
+  stage.addEventListener('pointerup', () => { drag = false; });
+  stage.addEventListener('dblclick', e => zoomAt(e.clientX, e.clientY, 1.6));
+  document.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === '+' || e.key === '=') zoomAt(innerWidth / 2, innerHeight / 2, 1.3);
+    else if (e.key === '-' || e.key === '_') zoomAt(innerWidth / 2, innerHeight / 2, 1 / 1.3);
+    else if (e.key === '0') fit();
+  });
+
+  function decorate(){
+    document.querySelectorAll('.diagram').forEach(d => {
+      if (d.querySelector('.zoom-btn')) return;
+      const cap = d.querySelector('.cap') ? d.querySelector('.cap').textContent.trim() : '';
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'zoom-btn'; b.textContent = '⤢ Zoom';
+      b.addEventListener('click', () => { const s = d.querySelector('svg'); if (s) open(s, cap); });
+      d.addEventListener('dblclick', ev => { if (ev.target.closest('.zoom-btn')) return; const s = d.querySelector('svg'); if (s) open(s, cap); });
+      d.appendChild(b);
+    });
+  }
+  decorate();
+  const iv = setInterval(decorate, 700);
+  setTimeout(() => clearInterval(iv), 9000);
+})();
+</script>
+</body>
+</html>

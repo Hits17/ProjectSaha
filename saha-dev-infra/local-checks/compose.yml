@@ -1,0 +1,75 @@
+name: saha-local-checks
+services:
+  test-db:
+    image: postgres:16.15-bookworm
+    environment:
+      POSTGRES_DB: saha_test
+      POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD:?Run prepare.py first}
+    ports: ["127.0.0.1:15432:5432"]
+    volumes:
+      - test-postgres:/var/lib/postgresql/data
+      - ./initialize-test-db.sh:/docker-entrypoint-initdb.d/01-schema.sh:ro
+      - ../init-scripts:/saha/schema:ro
+      - ../migrations:/saha/migrations:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U postgres -d saha_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    networks: [test-data]
+  test-redis:
+    image: redis:7-alpine
+    command: [redis-server, --save, "", --appendonly, "no"]
+    ports: ["127.0.0.1:16379:6379"]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [test-data]
+  chat-db:
+    image: postgres:16.15-bookworm
+    environment:
+      POSTGRES_DB: synapse
+      POSTGRES_USER: synapse
+      POSTGRES_PASSWORD: ${CHAT_POSTGRES_PASSWORD:?Run prepare.py first}
+      POSTGRES_INITDB_ARGS: --encoding=UTF8 --locale=C
+    volumes: ["chat-postgres:/var/lib/postgresql/data"]
+    healthcheck:
+      test: [CMD, pg_isready, -U, synapse, -d, synapse]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    networks: [chat-data]
+  synapse:
+    image: ghcr.io/element-hq/synapse:v1.164.1
+    user: "${LOCAL_UID:?Run prepare.py first}:${LOCAL_GID:?Run prepare.py first}"
+    entrypoint: [python, -m, synapse.app.homeserver]
+    command: [--config-path, /data/homeserver.yaml]
+    depends_on:
+      chat-db:
+        condition: service_healthy
+    volumes: ["./generated/synapse:/data"]
+    networks: [chat-data, chat-web]
+  element:
+    image: vectorim/element-web:v1.12.33
+    volumes: ["./generated/element.json:/app/config.json:ro"]
+    networks: [chat-web]
+  tls:
+    image: caddy:2.11.7
+    depends_on: [synapse, element]
+    ports:
+      - "127.0.0.1:18448:18448"
+      - "127.0.0.1:18449:18449"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./generated/tls:/certs:ro
+    networks: [chat-web]
+networks:
+  test-data:
+  chat-data:
+    internal: true
+  chat-web:
+volumes:
+  test-postgres:
+  chat-postgres:
